@@ -1,0 +1,16 @@
+#sentid:sejong.1
+#text:이 시계는 10분 빠르다.
+0	이	이/MM	이	MM	MM	_	_	1	1	DP	DP	_	_	O
+1	시계는	시계/NNG+는/JX	시계는	NNG+JX	NNG+JX	_	_	3	3	NP_SBJ	NP_SBJ	시계.n	Accoutrements	O
+2	10분	10/SN+분/NNB	10분	SN+NNB	SN+NNB	_	_	3	3	NP	NP	_	_	O
+3	빠르다.	빠르/VA+다/EF+./SF	빠르다.	VA+EF+SF	VA+EF+SF	_	_	-1	-1	VP	VP	_	_	O
+
+#sentid:sejong.2
+#text:어머니게서는 졸업 기념으로 시계를 사 주셨다.
+0	어머니게서는	어머니/NNG+게서/JKB+는/JX	어머니게서는	NNG+JKB+JX	NNG+JKB+JX	_	_	4	4	NP_AJT	NP_AJT	_	_	O
+1	졸업	졸업/NNG	졸업	NNG	NNG	_	_	2	2	NP	NP	_	_	O
+2	기념으로	기념/NNG+으로/JKB	기념으로	NNG+JKB	NNG+JKB	_	_	4	4	NP_AJT	NP_AJT	_	_	O
+3	시계를	시계/NNG+를/JKO	시계를	NNG+JKO	NNG+JKO	_	_	4	4	NP_OBJ	NP_OBJ	시계.n	Accoutrements	O
+4	사	사/VV+어/EC	사	VV+EC	VV+EC	_	_	5	5	VP	VP	_	_	O
+5	주셨다.	주/VX+시/EP+었/EP+다/EF+./SF	주셨다.	VX+EP+EP+EF+SF	VX+EP+EP+EF+SF	_	_	-1	-1	VP	VP	_	_	O
+

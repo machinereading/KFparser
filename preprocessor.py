@@ -36,10 +36,13 @@ def load_data():
         d = f.readlines()
         test, n_test = load_tsv(d)
         #print(len(test))
-    with open('./koreanframenet/data/training_fe.tsv','r') as f:
+    with open('./koreanframenet/data/dev.tsv','r') as f:
         d = f.readlines()
-        training_fe, n_training_fe = load_tsv(d)
+        dev, n_dev = load_tsv(d)
         #print(len(training))
+    with open('./koreanframenet/data/exemplar.tsv','r') as f:
+        d = f.readlines()
+        exemplar, n_exemplar = load_tsv(d)
         
     print('# training_data')
     print(' - number of full-sentences:', n_training)
@@ -49,11 +52,15 @@ def load_data():
     print(' - number of full-sentences:', n_test)
     print(' - number of sentences:', len(test), '\n')
     
-    print('# training_fe (for FE identification)')
-    print(' - number of full-sentences:', n_training_fe)
-    print(' - number of sentences:', len(training_fe), '\n')
+    print('# dev_data')
+    print(' - number of full-sentences:', n_dev)
+    print(' - number of sentences:', len(dev), '\n')
     
-    return training, test, training_fe
+    print('# exemplar data (from sejong)')
+    print(' - number of full-sentences:', n_exemplar)
+    print(' - number of sentences:', len(exemplar), '\n')
+    
+    return training, test, dev, exemplar
               
 #training, test, training_fe = load_data()   
 
