@@ -44,21 +44,21 @@ def load_data():
         d = f.readlines()
         exemplar, n_exemplar = load_tsv(d)
         
-    print('# training_data')
-    print(' - number of full-sentences:', n_training)
-    print(' - number of sentences:', len(training), '\n')
+    #print('# training_data')
+    #print(' - number of sentences:', n_training)
+    #print(' - number of annotations:', len(training), '\n')
     
-    print('# test_data')
-    print(' - number of full-sentences:', n_test)
-    print(' - number of sentences:', len(test), '\n')
+    #print('# test_data')
+    #print(' - number of sentences:', n_test)
+    #print(' - number of annotations:', len(test), '\n')
     
-    print('# dev_data')
-    print(' - number of full-sentences:', n_dev)
-    print(' - number of sentences:', len(dev), '\n')
+    #print('# dev_data')
+    #print(' - number of sentences:', n_dev)
+    #print(' - number of annotations:', len(dev), '\n')
     
-    print('# exemplar data (from sejong)')
-    print(' - number of full-sentences:', n_exemplar)
-    print(' - number of sentences:', len(exemplar), '\n')
+    #print('# exemplar data (from sejong)')
+    #print(' - number of sentences:', n_exemplar)
+    #print(' - number of annotations:', len(exemplar), '\n')
     
     return training, test, dev, exemplar
               
