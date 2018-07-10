@@ -42,5 +42,5 @@ def test():
     for i in pred:
         for j in i:
             print(j, len(j))
-test()
+#test()
 
