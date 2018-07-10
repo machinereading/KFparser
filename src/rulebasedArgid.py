@@ -229,29 +229,11 @@ def argid(file_seq = None, feature = None):
                     FE = find_path2(tokens, int(token[0]), predictions, directed_list, False)
                 if FE != None:
                     predictions['tokens'][int(token[0])].append(FE)
-
-            #######################################################
-            # Consider exceptation rules
-            # Third pass
-            ########################################################
+                    
             for token in tokens:
-                parent = int(check_length(tokens, int(token[0]), 9 ,False))
-                pt = check_length(tokens, int(token[0]), 11, False)
-                frame_pt = check_length(tokens, frame, 11, False)
-                frame_parent = int(check_length(tokens, frame, 9, False))
-                frame_parent_parent = int(check_length(tokens, frame_parent, 9, False))
-                pos = token[4]
-                info = pos.split("+")
-                suffix = None
-                for info_seg in info:
-                    short_info_seg = info_seg.split("/")
-                    if len(short_info_seg) >= 2:
-                        if short_info_seg[1].find('J') != -1:
-                            suffix = short_info_seg[0]
-                if len(token) == 15:
-                    FE = token[-1]
-                if FE == None and (pt == 'NP_MOD' or pt == 'VP_MOD' or pt == 'NP_AJT' or pt == 'VP_AJT'or pt =='VNP_MOD' or pt == 'VNP_AJT') and suffix != None:
-                    FE = check_dictionary(other_suffix,dic, lu_id, frame_pt, suffix, pos)
+                if len(predictions['tokens'][int(token[0])]) <= 14:
+                    while len(predictions['tokens'][int(token[0])]) < 15:
+                        predictions['tokens'][int(token[0])].append('O')
 
             final_prediction.append(predictions['tokens'])
         else:
