@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[2]:
+# In[1]:
 
 import json
 import etri
@@ -12,13 +12,15 @@ from koreanframenet import kfn
 from optparse import OptionParser
 
 
-# In[3]:
+# In[32]:
 
 import targetid
 import frameid
+import argid
+import graphGeneration
 
 
-# In[4]:
+# In[3]:
 
 # options
 
@@ -37,7 +39,7 @@ optpr.add_option("--input", dest='input', help="input a sentence", type="string"
 optpr.mode = 'parsing'
 optpr.targetid = 'baseline'
 optpr.frameid = 'frequent'
-optpr.argid = 'baseline'
+optpr.argid = 'rulebased'
 
 #print options
 #sys.stderr.write("\nCOMMAND: "+' '.join(sys.argv) + '\n')
@@ -49,32 +51,41 @@ if optpr.mode in ['parsing']:
     sys.stderr.write("RESULT WILL BE SAVED TO\t%s\n" %resultfname)
 
 
-# In[5]:
+# In[4]:
 
 # parset options
 
 target_identifier = targetid.target_identifier
 frame_identifier = frameid.frame_identifier
+arg_identifier = argid.arg_identifier
 
 
-# In[12]:
+# In[30]:
 
 def frameparsing(sent):
     conll = etri.getETRI_CoNLL2009(sent)
     conll_target = target_identifier(conll, optpr.targetid)
-    #print(conll_target[0])
     conll_frame = frame_identifier(conll_target, optpr.frameid)
+    conll_arg = arg_identifier(conll_frame, optpr.argid)
     
-    return conll_frame
+    return conll_arg
 
 
-# In[14]:
+# In[33]:
 
 # parsing
 
 def test():
     if optpr.mode == 'parsing':
-        sent = optpr.input = '나는 밥을 먹고 학교에 갔다'
-        frameparsing(sent)
+        sent = optpr.input = "기계 학습(機械學習) 또는 머신 러닝(영어: machine learning)은 인공 지능의 한 분야로, 기계가 정보를 학습하도록 하는 알고리즘과 기술을 개발하는 분야를 말한다."
+        parsed = frameparsing(sent)
+        graph = graphGeneration.conll2graph(parsed)
+        for triple in graph:
+            print(triple)
 test()
+
+
+# In[ ]:
+
+
 
