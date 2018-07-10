@@ -149,7 +149,7 @@ def argid(file_seq = None, feature = None):
 
     for data in datas:
         if index % 100 == 1:
-            print("Evaluating: ", index)
+            #print("Evaluating: ", index)
         tokens = data['tokens']
         text = data['text']
         
