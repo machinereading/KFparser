@@ -1,0 +1,33 @@
+usage:
+
+File로 사용시
+
+train : python argI.py --mode 'train' --train_file './load/path/to/train_file.tsv' --feature_file './save/path/to/feature_file.json' --CoNLL '2009'
+
+test (make prediction file) : python argI.py --mode 'test' --test_file './load/path/to/test_file.tsv' --feature_file './load/path/to/feature_file.json' --prediction_file './save/path/to/prediciton_file.json' --CoNLL '2009'
+
+evaluate : python argI.py --mode 'evaluate' --golden_file './load/path/to/golden_file.tsv(test.tsv)' --covered_output_file './save/path/to/final_prediction.tsv' --prediction_file './load/path/to/prediction_file.json' --feature_file './load/path/to/feature_file.json' -CoNLL '2009'
+
+
+##############################
+python module로 사용시
+############################
+import argI_train
+
+
+feature = argI_train.train(file_seq = input_seq, save_mode = False, CoNLL=False, data_format=False)
+
+data_format
+True: File 형식
+False: List 형식
+
+CoNLL
+True: 2006
+False: 2009
+###################################################
+import argI_test
+
+
+c = argI_test.test(file_seq = test_seq, feature_seq = feature, save_mode = False, CoNLL=False, data_format=False)
+
+한 test 문장당 나올 수 있는 모든 프레임을 태깅된 list가 나옴

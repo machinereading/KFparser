@@ -15,6 +15,8 @@ conll_frame = frameid.frame_identifier(conll_target, frameid_model)
 #conll_arg = argid.arg_identifier(conll_frame, argid_model)
 
 for i in conll_frame:
-    for j in i:
-        print(j)
+    print(i)
+#    for j in i:
+#        print(j)
 
+print(conll_frame)

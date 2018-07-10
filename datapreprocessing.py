@@ -1,17 +1,17 @@
 
 # coding: utf-8
 
-# In[1]:
+# In[52]:
 
 from koreanframenet import kfn
 import json
 import etri
 
 
-# In[2]:
+# In[53]:
 
 def load_kfn():
-    with open('./koreanframenet/resource/KFN_lus.json.bak3', 'r') as f:
+    with open('./koreanframenet/resource/KFN_lus.json', 'r') as f:
         kolu = json.load(f)
     with open('./koreanframenet/resource/KFN_annotations.json','r') as f:
         koanno = json.load(f)
@@ -20,13 +20,25 @@ def load_kfn():
 kolu, koanno = load_kfn()
 
 
-# In[6]:
+# In[54]:
 
 l = []
 for i in koanno:
     sent_id = i['text']['sent_id']
     l.append(sent_id)
 print(len(l))
+
+
+# In[69]:
+
+def get_luid(anno_id):
+    luid = False
+    for lu in kolu:
+        if anno_id in lu['ko_annotation_id']:
+            luid = lu['lu_id']
+            #print(luid)
+            break
+    return luid
 
 
 # In[18]:
@@ -56,6 +68,143 @@ def gen_fe_list_for_lu():
 
 # In[ ]:
 
+def gen_lu_list():
+    lus_in_annos = []
+    for i in koanno:
+        annos = i['frameAnnotation']['ko_annotations']
+        sent_id = i['text']['sent_id']
+        print(sent_id)
+        anno_ids = []
+        for a in annos:
+            anno_ids.append(a['ko_annotation_id'])
+
+        for aid in anno_ids:
+            for lu in kolu:
+                if aid in lu['ko_annotation_id']:
+                    lus_in_annos.append(lu['lu'])
+    lus_in_annos = list(set(lus_in_annos))
+    
+    result = []
+    for lu_in_annos in lus_in_annos:
+        for i in kolu:
+            if lu_in_annos == i['lu']:
+                count = len(i['ko_annotation_id'])
+                if count > 1:
+                    result.append(lu_in_annos)                    
+    print(len(result))
+    with open('./data/ambi_lu_in_annos.json','w') as f:
+        json.dump(result, f, ensure_ascii=False, indent=4)
+#gen_lu_list()
+
+
+# In[ ]:
+
+def gen_sent_list_by_lu():
+    with open('./data/ambi_lu_in_annos.json','r') as f:
+        d = json.load(f)
+    mylist_1 = []
+    for i in d:
+        for j in kolu:
+            if i == j['lu']:
+                t = (i, j['ko_annotation_id'])
+                mylist_1.append(t)
+    print(len(mylist_1))
+    sent_list = []
+    tu_list = []
+    for i in koanno:
+        annos = i['frameAnnotation']['ko_annotations']
+        sent_id = i['text']['sent_id']
+        print(sent_id)
+        anno_ids = []
+        check_list = []
+        for a in annos:
+            annoid = a['ko_annotation_id']
+            try:
+                luid = get_luid(annoid)
+                lu_name = kfn.lu(luid)['lu']
+                for m in mylist_1:
+                    if annoid in m[1]:
+                        check_list.append(lu_name)
+                        break
+            except KeyboardInterrupt:
+                raise
+            except:
+                pass
+        if len(check_list) == len(annos):
+            mylist = list(set(check_list))
+            tu = (sent_id, mylist)
+            sent_list.append(sent_id)
+            tu_list.append(tu)
+            #reak
+    print(len(sent_list))
+    
+    with open('./data/sent_list_by_ambi_lu.json','w') as f:
+        json.dump(sent_list, f, ensure_ascii=False, indent=4)
+    with open('./data/sent_lus_tuple_by_ambi_lu.json','w') as f:
+        json.dump(tu_list, f, ensure_ascii=False, indent=4)
+#gen_sent_list_by_lu()
+
+
+# In[72]:
+
+def gen_sent_list_by_lu_final(): 
+    with open('./data/sent_list_by_ambi_lu.json','r') as f:
+        sent_list = json.load(f)
+    with open('./data/sent_lus_tuple_by_ambi_lu.json','r') as f:
+        tu_list = json.load(f)
+    
+#     training_lu_list = []
+#     for i in koanno:
+#         sent_id = i['text']['sent_id']
+#         print(sent_id)
+#         annos = i['frameAnnotation']['ko_annotations']
+#         if sent_id not in sent_list:
+#             for a in annos:
+#                 anno_id = a['ko_annotation_id']
+#                 luid = get_luid(anno_id)
+#                 try:
+#                     lu_name = kfn.lu(luid)['lu']
+#                     training_lu_list.append(lu_name)
+#                 except KeyboardInterrupt:
+#                     raise
+#                 except:
+#                     pass
+#     training_lu_list = list(set(training_lu_list))
+#     print(len(training_lu_list))
+#     with open('./data/training_lu.json','w') as f:
+#         json.dump(training_lu_list, f, ensure_ascii=False, indent=4)
+
+    check_list = []
+    result = []
+    with open('./data/training_lu.json','r') as f:
+        training_lu_list = json.load(f)
+    
+    for tu in tu_list:
+        print(len(training_lu_list))
+        for lu in tu[1]:
+            if lu in training_lu_list:
+                check_list.append('t')
+        if len(check_list) == len(tu[1]):
+            result.append(tu[0])
+            print('added, total:', len(result))
+        else:
+            training_lu_list = training_lu_list + tu[1]
+            training_lu_list = list(set(training_lu_list))
+        
+                
+    print(len(result))
+                
+                
+        
+    
+    #with open('./data/sent_list_by_ambi_lu.json','w') as f:
+        #json.dump(result, f, ensure_ascii=False, indent=4)
+            
+gen_sent_list_by_lu_final() 
+
+
+# In[68]:
+
 def gen_list_bylu():
     with open('./data/fes_of_each_lus.json','r') as f:
         fes_of_lu = json.load(f)
@@ -67,31 +216,38 @@ def gen_list_bylu():
     n = 0
     num_of_test = 0
     result = []
+    lus_in_annos = []
     for i in koanno:
         annos = i['frameAnnotation']['ko_annotations']
         sent_id = i['text']['sent_id']
         anno_ids = []
         for a in annos:
             anno_ids.append(a['ko_annotation_id'])
-        mylus = []
+
         for aid in anno_ids:
             for lu in kolu:
                 if aid in lu['ko_annotation_id']:
-                    mylus.append(lu['lu'])
+                    lus_in_annos.append(lu['lu'])
         check_list_1 = []
-        for mylu in mylus:
-            lex = mylu.split('.')[0]
-            lu_count = lexs.count(lex)
-            if lu_count > 1:
-                check_list_1.append('t')
-        if len(check_list_1) == len(anno_ids):
-            num_of_test += 1
-            print(num_of_test, len(koanno))
-            result.append(sent_id)
-            #break
-    print(num_of_test)
-    with open('./data/sent_list_by_lu.json', 'w') as f:
-        json.dump(result, f, ensure_ascii=False, indent=4)
+        #print(lus_in_annos)
+    lus_in_annos = list(set(lus_in_annos))
+    print(len(lus_in_annos))
+          
+#         for mylu in mylus:
+#             lex = mylu.split('.')[0]
+#             lu_count = lexs.count(lex)# 이거 다시해야될듯
+#             if lu_count > 1:
+#                 check_list_1.append('t')
+#         if len(check_list_1) == len(anno_ids):
+#             num_of_test += 1
+#             print(num_of_test, len(koanno))
+#             result.append(sent_id)
+#             #break
+#         break
+#     print(num_of_test)
+    #with open('./data/sent_list_by_lu.json', 'w') as f:
+        #json.dump(result, f, ensure_ascii=False, indent=4)
+          
 #gen_list_bylu()
 
 
@@ -104,23 +260,16 @@ def get_fes(deno):
             fe = d['obj']
             fes.append(fe)
     fes = list(set(fes))
-    return fes
+    return fes 
 
-def get_luid(sent_id):
-    luid = False
-    for lu in kolu:
-        if sent_id in lu['ko_annotation_id']:
-            luid = lu['lu_id']
-            #print(luid)
-            break
-    return luid
+
 
 def gen_list_by_FE():
     sents = []
     anno_ids = []
     with open('./data/fes_of_each_lus.json','r') as f:
         fes_of_lu = json.load(f)
-    with open('./data/sent_list_by_lu.json','r') as f:
+    with open('./data/sent_list_by_ambi_lu.json','r') as f:
         sent_list = json.load(f)
     
 #     fes_of_frame = []
@@ -153,7 +302,9 @@ def gen_list_by_FE():
             for anno in annos:
                 
                 anno_id = anno['ko_annotation_id']
+                #print(anno_id)
                 luid = get_luid(anno_id)
+                #print(luid)
                 frame = kfn.lu(luid)['frameName']
                 lu_list.append(kfn.lu(luid)['lu'])
 
@@ -480,6 +631,6 @@ def write_data():
                             f.write(line+"\n")
                         f.write('\n')
     print('done')
-write_data()
+#write_data()
         
 
