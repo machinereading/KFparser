@@ -87,7 +87,7 @@ def main():
             print("[Error]: Please enter the CoNLL data format")
             error=1
         if error == 0:
-            argI_test.test(test_file, feature_file, prediction_file, True, CoNLL)        
+            argI_test.test(file_name=test_file, feature_name=feature_file, output_file=prediction_file, save_mode=True, CoNLL=CoNLL, data_format = True)        
         
     elif mode == 'evaluate':
         golden_file = args.golden_file

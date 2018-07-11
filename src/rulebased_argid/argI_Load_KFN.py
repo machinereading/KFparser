@@ -14,7 +14,7 @@ def get_target(sent_list):
     for i in sent_list:
         #print(i)
         if len(i) <=3:
-            print(sent_list)
+            print("error sentence ", sent_list)
         if i[-3] != '_':
             token_list.append(i[1])
             frame = i[-2]
@@ -33,7 +33,6 @@ def get_lu_id(sent_list):
 def genData(data):
     result = []
     koreanFN = []
-    print(data[0])
     for data_seg in data:
         koreanFN.append(data_seg['tokens'])
     # koreanFN = trainign data in CONLL format

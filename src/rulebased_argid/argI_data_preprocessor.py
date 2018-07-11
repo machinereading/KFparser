@@ -1,4 +1,5 @@
 import json
+import re
 
 def load_tsv(lines):
     result = []
@@ -7,6 +8,7 @@ def load_tsv(lines):
     dic = {}
     for line in lines:
         line = line.rstrip('\n')
+		line = re.sub("\ufeff", "", line)
         if line.startswith('#'):
             if line[1] == 's':
                 dic = {}
