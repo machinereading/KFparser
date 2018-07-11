@@ -2,11 +2,21 @@ import csv
 import re
 import json
 
-def arg_id(datas, feature_list):
+def arg_id(datasc, feature_list):
+    datas=[]
+    for data in datasc:
+        temp = []
+        for token in data:
+            temp.append(token[:14])
+        datas.append(temp)
+    
     for data in datas:
         for token in data:
-            if token[-1] != '_':
-                frame_lu = token[-2] + '.' + token[-1]
+            token = token[:14]
+            
+        for token in data:
+            if token[12] != '_':
+                frame_lu = token[12] + '.' + token[13]
                 frame_usage = token[11]
         
         for feature in feature_list:
@@ -23,7 +33,6 @@ def arg_id(datas, feature_list):
                     if info[1].find("J") != -1:
                         for pattern in frame_form['pattern']:
                             if pattern['pt'] == frame_usage:
-
                                 for set_ in pattern['set']:
                                     if set_ == info[0] and pattern['set'][set_] > count:
                                         count = pattern['set'][set_]

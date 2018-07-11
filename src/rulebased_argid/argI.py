@@ -55,12 +55,12 @@ def main():
             print("[Error]: Please enter the feature file json")
             error=1
         if CoNLL == None:
-            if CoNLL == '2009':
-                CoNLL = False
-            else:
-                CoNLL = True
             print("[Error]: Please enter the CoNLL data format")
             error=1
+        if CoNLL == '2009':
+            CoNLL = False
+        else:
+            CoNLL = True
         if error == 0:
             argI_train.train(file_name=train_file, output_file=feature_file, save_mode=True, CoNLL=CoNLL, data_format=True)
                         
@@ -80,12 +80,12 @@ def main():
             print("[Error]: Please enter the prediction file")
             error=1
         if CoNLL == None:
-            if CoNLL == '2009':
-                CoNLL = False
-            else:
-                CoNLL = True
             print("[Error]: Please enter the CoNLL data format")
             error=1
+        if CoNLL == '2009':
+            CoNLL = False
+        else:
+            CoNLL = True
         if error == 0:
             argI_test.test(file_name=test_file, feature_name=feature_file, output_file=prediction_file, save_mode=True, CoNLL=CoNLL, data_format = True)        
         
@@ -104,17 +104,17 @@ def main():
             error=1
         if prediction_file == None:
             print("[Error]: Please enter the prediction file")
-            error=11
+            error=1
         if feature_file == None:
             print("[Error]: Please enter the feature file")
             error=1
         if CoNLL == None:
-            if CoNLL == '2009':
-                CoNLL = False
-            else:
-                CoNLL = True
             print("[Error]: Please enter the CoNLL data format")
             error=1
+        if CoNLL == '2009':
+            CoNLL = False
+        else:
+            CoNLL = True
         if error == 0:
             argI_evaluate.evaluate(prediction_file, golden_file, covered_output_file, feature_file, True, CoNLL)
     else:

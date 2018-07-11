@@ -60,7 +60,7 @@ def check_length(tokens, index, number, CoNLL=True):
         else:
             return tokens[index][number]
     else:
-        if len(tokens[index]) < 13:
+        if len(tokens[index]) < 14:
             return tokens[index][number-2]
         else:
             return tokens[index][number]
@@ -149,32 +149,32 @@ def argid(file_seq = None, feature = None):
 
     for data in datas:
         if index % 100 == 1:
-            #print("Evaluating: ", index)
+            print("Evaluating: ", index)
         tokens = data['tokens']
         text = data['text']
         
         frame = None
         for token in tokens:
-            if token[-1] != '_':
-                lu = token[-2] + '.' + token[-1]
+            if token[12] != '_':
+                lu = token[12] + '.' + token[13]
                 frame = int(token[0])
+                break
         
         predictions = {}
         predictions['sentid'] = data['sentid']
         predictions['text'] = data['text']
         predictions['tokens'] = []
         for token in tokens:
-            predictions['tokens'].append(token[:])
-
-        
-        frame_format = None
+            predictions['tokens'].append(token[:14])
+        for token in predictions['tokens']:
+            if len(token) >= 15:
+                print("error") 
         for json_data in feature:
             if json_data['lu'] == lu:
                 lu_id = json_data['lu_id']
-                frame_format = json_data
 
         if frame != None:
-            
+            print(frame)
             frame_pt = check_length(tokens, frame, 11, False)
             directed_list = []
             #######################################################
@@ -182,15 +182,15 @@ def argid(file_seq = None, feature = None):
             # First pass
             #######################################################            
             for token in tokens:
-                if len(token) == 15:
-                    token.pop(-1)
+                if len(token) >=15:
+                    token = token[:14]
                 
                 parent = int(check_length(tokens, int(token[0]), 9, False))
                 pt = check_length(tokens, int(token[0]), 11, False)
                 frame_pt = check_length(tokens, frame, 11, False)
                 frame_parent = int(check_length(tokens, frame, 9, False))
                 frame_parent_parent = int(check_length(tokens, frame_parent, 9, False))
-                pos = token[4]
+                pos = token[2]
                 info = pos.split("+")
                 suffix = None
                 for info_seg in info:
@@ -215,7 +215,7 @@ def argid(file_seq = None, feature = None):
                         FE = check_dictionary(to_parent_frame_dic, lu_id, frame_pt, pt, pos)
                     if FE == None and (pt_check[1] == 'CMP' or pt_check[1] == 'OBJ' or pt_check[1] == 'SBJ') and (frame_parent_parent == int(token[0])):
                         FE = check_dictionary(from_parent_frame_dic, lu_id, frame_pt, pt, pos)
-                if FE != None:
+                if FE != None and len(predictions['tokens'][int(token[0])]) <= 14:
                     predictions['tokens'][int(token[0])].append(FE)
                     directed_list.append(int(token[0]))
 
@@ -229,7 +229,32 @@ def argid(file_seq = None, feature = None):
                     FE = find_path2(tokens, int(token[0]), predictions, directed_list, False)
                 if FE != None:
                     predictions['tokens'][int(token[0])].append(FE)
-                    
+            #######################################################
+            # Consider exceptation rules
+            # Third pass
+            ########################################################
+            for token in tokens:
+                if len(predictions['tokens'][int(token[0])]) >= 15:
+                    continue
+                parent = int(check_length(tokens, int(token[0]), 9))
+                pt = check_length(tokens, int(token[0]), 11)
+                frame_pt = check_length(tokens, frame, 11)
+                frame_parent = int(check_length(tokens, frame, 9))
+                frame_parent_parent = int(check_length(tokens, frame_parent, 9))
+                pos = token[4]
+                info = pos.split("+")
+                suffix = None
+                for info_seg in info:
+                    short_info_seg = info_seg.split("/")
+                    if len(short_info_seg) >= 2:
+                        if short_info_seg[1].find('J') != -1:
+                            suffix = short_info_seg[0]
+                FE = None
+                if FE == None and (pt == 'NP_MOD' or pt == 'VP_MOD' or pt == 'NP_AJT' or pt == 'VP_AJT'or pt =='VNP_MOD' or pt == 'VNP_AJT') and suffix != None:
+                     FE = check_dictionary(other_suffix,dic, lu_id, frame_pt, suffix, pos)
+                if FE != None:
+                     predictions['tokens'][int(token[0])].append(FE)
+	                   
             for token in tokens:
                 if len(predictions['tokens'][int(token[0])]) <= 14:
                     while len(predictions['tokens'][int(token[0])]) < 15:
@@ -237,6 +262,7 @@ def argid(file_seq = None, feature = None):
 
             final_prediction.append(predictions['tokens'])
         else:
+            print("Nono")
             final_prediction.append(data['tokens'])
         index += 1    
 
