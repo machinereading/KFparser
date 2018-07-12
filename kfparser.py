@@ -13,7 +13,7 @@ from koreanframenet import kfn
 from optparse import OptionParser
 
 
-# In[3]:
+# In[2]:
 
 
 import targetid
@@ -22,7 +22,7 @@ import argid
 import graphGeneration
 
 
-# In[4]:
+# In[6]:
 
 
 # options
@@ -43,7 +43,7 @@ optpr.mode = 'parsing'
 optpr.targetid = 'baseline'
 optpr.frameid = 'frequent'
 optpr.argid = 'rulebased'
-optpr.argid = 'suffix_only'
+#optpr.argid = 'suffix_only'
 
 #print options
 #sys.stderr.write("\nCOMMAND: "+' '.join(sys.argv) + '\n')
@@ -55,7 +55,7 @@ if optpr.mode in ['parsing']:
     sys.stderr.write("RESULT WILL BE SAVED TO\t%s\n" %resultfname)
 
 
-# In[5]:
+# In[4]:
 
 
 # parset options
@@ -65,7 +65,7 @@ frame_identifier = frameid.frame_identifier
 arg_identifier = argid.arg_identifier
 
 
-# In[6]:
+# In[5]:
 
 
 def frameparsing(sent):
@@ -78,7 +78,7 @@ def frameparsing(sent):
     return conll_arg
 
 
-# In[12]:
+# In[7]:
 
 
 # parsing
@@ -94,7 +94,7 @@ def test():
 #test()
 
 
-# In[ ]:
+# In[1]:
 
 
 def cnn_test():
@@ -107,7 +107,7 @@ def cnn_test():
     s_f_count, s_fe_count = 0,0
     f_count, fe_count = 0,0
     
-    cnn_result = open('./tmp/cnnresult.txt','w')
+    cnn_result = open('./tmp/cnnresult.rulebased.txt','w')
     for sent in sentences:
         cnn_result.write(sent+'\n')
         try:
@@ -120,7 +120,7 @@ def cnn_test():
                     if t[1] != 'frdf:lu':
                         s_fe_count += 1
                         break
-                    if t[1] != 'frdf:lu':
+                    if 'frdf:lu' not in t[1]:
                         fe_count += 1
                     else:
                         f_count += 1
@@ -133,4 +133,12 @@ def cnn_test():
     print(s_f_count, s_fe_count, f_count, fe_count)
         
 cnn_test()
+
+
+# In[16]:
+
+
+# import preprocessor
+# trn, tst, dev, exemplar = preprocessor.load_data()
+# preprocessor.data_stat()
 

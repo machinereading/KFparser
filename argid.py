@@ -15,7 +15,7 @@ from src import rulebasedArgid2
 def load_data():
     with open('./src/data/rulebased_argid_features.json','r') as f:
         rulebasedFeature = json.load(f)
-    with open('./src/data/rulebased2_argid_features.json','r') as f:
+    with open('./src/data/rulebased_argid2_features.json','r') as f:
         suffixFeature = json.load(f)
         
     return rulebasedFeature, suffixFeature
