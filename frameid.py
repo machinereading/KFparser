@@ -3,6 +3,7 @@
 
 # In[1]:
 
+
 import json
 import re
 from koreanframenet import kfn
@@ -12,7 +13,9 @@ import random
 
 # In[2]:
 
+
 def get_frame_candidates(token_list):
+    lu_list = []
     frame_candis = []
     for token in token_list:
         if token[12] != '_':
@@ -28,6 +31,7 @@ def get_frame_candidates(token_list):
 
 # In[3]:
 
+
 def frame_identification_frequent(token_list):
     lu_list = get_frame_candidates(token_list)
     max_num = 0
@@ -42,6 +46,7 @@ def frame_identification_frequent(token_list):
 
 # In[4]:
 
+
 def frame_identification_random(token_list):
     lu_list = get_frame_candidates(token_list)
     frame_candis = []
@@ -49,11 +54,15 @@ def frame_identification_random(token_list):
         frame_candi = lu_item['frameName']
         frame_candis.append(frame_candi)
     frame_candis = list(set(frame_candis))
-    frame = random.choice(frame_candis)
+    if len(frame_candis) > 0:
+        frame = random.choice(frame_candis)
+    else:
+        frame = None
     return frame
 
 
 # In[23]:
+
 
 def frame_identifier(sent_list, model):
     for n in range(len(sent_list)):
@@ -63,16 +72,20 @@ def frame_identifier(sent_list, model):
             frame = frame_identification_frequent(sent_list[n])
         else:
             print('no model')
-            
-        for token in sent_list[n]:
-            if token[12] != '_':
-                token.append(frame)
-            else:
+        if frame != None:
+            for token in sent_list[n]:
+                if token[12] != '_':
+                    token.append(frame)
+                else:
+                    token.append('_')
+        else:
+            for token in sent_list[n]:
                 token.append('_')
     return sent_list
 
 
 # In[13]:
+
 
 def eval_model(test_data, model):    
     answer, wrong = 0,0    
@@ -124,6 +137,7 @@ def evaluation():
 
 
 # In[22]:
+
 
 def test():
     import targetid

@@ -3,6 +3,7 @@
 
 # In[28]:
 
+
 # input: CoNLL2009-based list (output of preprocessor.py)
 
 from koreanframenet import kfn
@@ -13,6 +14,7 @@ import posChanger
 
 
 # In[36]:
+
 
 def target_identification_surfaceform(sent_list):
     result = []
@@ -73,11 +75,13 @@ def target_identification_surfaceform(sent_list):
                 if lexu == lu:
                     lu_with_frame.append(j)
             lu_dict['lu_with_frame'] = lu_with_frame
-            result.append(lu_dict)
+            if lu != False:
+                result.append(lu_dict)
     return result
 
 
 # In[25]:
+
 
 def dummy():
     st = '선언서를'
@@ -86,7 +90,8 @@ def dummy():
 #dummy()    
 
 
-# In[54]:
+# In[67]:
+
 
 def target_identifier(sent_list, model):
     if model == 'baseline':
@@ -94,12 +99,13 @@ def target_identifier(sent_list, model):
     else:
         targets = target_identification_surfaceform(sent_list)
     result = []
+    token_list = sent_list
     for i in range(len(targets)):
         new_token_list = []
-        for token in sent_list:
+        for token in token_list:
             new_token = token
             if len(new_token) > 12:
-                new_token = token[:-1]
+                new_token = token[:12]
             tokid = token[0]
             if tokid == targets[i]['token_id']:
                 new_token.append(targets[i]['lu'])
@@ -107,17 +113,19 @@ def target_identifier(sent_list, model):
                 new_token.append('_')
             new_token_list.append(new_token)
         result.append(new_token_list)
-    if len(targets) == 0:
+    if len(result) == 0:
         new_token_list = []
-        for token in sent_list:
-            new_token = token
+        for token in token_list:
+            new_token = token[:12]
             new_token.append('_')
-        
+            new_token_list.append(new_token)
+        result.append(new_token_list)
                     
     return result
 
 
-# In[56]:
+# In[69]:
+
 
 def test():
     sent = '나는 밥을 먹고 학교에 갔다'
