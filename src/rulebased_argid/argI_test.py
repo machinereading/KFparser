@@ -162,9 +162,8 @@ def test(file_seq=None, feature_seq = None, file_name=None, feature_name=None, o
             if CoNLL == True:
                 temp['tokens'].append(token[0:-3]+['_', '_' , '_'])
             else:
-                temp['tokens'].append(token[0:-3]+['_' , '_' , 'O'])
+                temp['tokens'].append(token[0:12]+['_' , '_' , 'O'])
         datas.append(temp)
-    
     index = 0
     final_prediction = []
                             
@@ -205,19 +204,8 @@ def test(file_seq=None, feature_seq = None, file_name=None, feature_name=None, o
                                     frame.append(int(token[0]))
                                     final_pt = token[2]
                                     final_pt = final_pt.split("+")
-                        pos = 0
-                        if len(frame) >= 1:
-                            for final_pt_seg in final_pt:
-                                final_pt_seg = final_pt_seg.split("/")
-                                if len(final_pt_seg) >= 2:
-                                    if lu_seg[1] == 'n' and final_pt_seg[1].find("N") != -1:
-                                        pos = 1
-                                    if lu_seg[1] == 'v' and final_pt_seg[1].find("VV") != -1:
-                                        pos = 1
-                                    if lu_seg[1] == 'a' and final_pt_seg[1].find("VA") != -1:
-                                        pos = 1
 
-                        if [frame, json_format] != [[],{}] and pos == 1:
+                        if [frame, json_format] != [[],{}]:
                             frame_list.append([frame, json_format])
                         frame = []
                         json_format = {}
@@ -269,7 +257,7 @@ def test(file_seq=None, feature_seq = None, file_name=None, feature_name=None, o
                         frame_pt = check_length(tokens, frame, 6)
                         frame_parent = int(check_length(tokens, frame, 5))
                         frame_parent_parent = int(check_length(tokens, frame_parent, 5))
-                        pos = token[3]
+                        pos = token[2]
                         info = pos.split("+")
                         suffix = None
                         for info_seg in info:
@@ -329,7 +317,7 @@ def test(file_seq=None, feature_seq = None, file_name=None, feature_name=None, o
                                 if short_info_seg[1].find('J') != -1:
                                     suffix = short_info_seg[0]
                         FE = token[-1]
-                        if FE == None and (pt == 'NP_MOD' or pt == 'VP_MOD' or pt == 'NP_AJT' or pt == 'VP_AJT'or pt =='VNP_MOD' or pt == 'VNP_AJT') and suffix != None:
+                        if FE == '_' and (pt == 'NP_MOD' or pt == 'VP_MOD' or pt == 'NP_AJT' or pt == 'VP_AJT'or pt =='VNP_MOD' or pt == 'VNP_AJT') and suffix != None:
                             FE = check_dictionary(other_suffix,dic, lu_id, frame_pt, suffix, pos)
 
                     prediction.append(predictions)
@@ -366,27 +354,13 @@ def test(file_seq=None, feature_seq = None, file_name=None, feature_name=None, o
                         length = len(surface_form)
                         sp = text.find(surface_form)
                         inf = text[sp:sp+length].split(" ")
-                        lu_seg = json_data['lu'].split(".")
                         for token in tokens:
                             for inf_seg in inf:
                                 if token[1] == inf_seg:
                                     json_format = json_data
                                     frame.append(int(token[0]))
-                                    final_pt = token[2]
-                                    final_pt = final_pt.split("+")
-                        pos = 0
-                        if len(frame) >= 1:
-                            for final_pt_seg in final_pt:
-                                final_pt_seg = final_pt_seg.split("/")
-                                if len(final_pt_seg) >= 2:
-                                    if lu_seg[1] == 'n' and final_pt_seg[1].find("N") != -1:
-                                        pos = 1
-                                    if lu_seg[1] == 'v' and final_pt_seg[1].find("VV") != -1:
-                                        pos = 1
-                                    if lu_seg[1] == 'a' and final_pt_seg[1].find("VA") != -1:
-                                        pos = 1
-
-                        if [frame, json_format] != [[],{}] and pos == 1:
+                                    break
+                        if [frame, json_format] != [[],{}]:
                             frame_list.append([frame, json_format])
                         frame = []
                         json_format = {}
@@ -413,6 +387,7 @@ def test(file_seq=None, feature_seq = None, file_name=None, feature_name=None, o
                 lu_id_list = []
                 for x in range(0, len(frame_list)):
                     frame = frame_list[x][0][-1]
+#                     print(index, frame_list[x][0][-1])
                     lu_id = frame_list[x][1]['lu_id']
 
                     predictions = {}
@@ -420,11 +395,12 @@ def test(file_seq=None, feature_seq = None, file_name=None, feature_name=None, o
                     predictions['text'] = data['text']
                     predictions['tokens'] = []
                     for token in tokens:
-                        predictions['tokens'].append(token[:])
+                        predictions['tokens'].append(token[:14])
+                     
 
                     for y in range(0, len(frame_list[x][0])):
-                        predictions['tokens'][frame_list[x][0][y]][-3] = frame_list[x][1]['lu'].split(".")[0] + '.' + frame_list[x][1]['lu'].split(".")[1]
-                        predictions['tokens'][frame_list[x][0][y]][-2] = frame_list[x][1]['lu'].split(".")[2]
+                        predictions['tokens'][frame_list[x][0][y]][12] = frame_list[x][1]['lu'].split(".")[0] + '.' + frame_list[x][1]['lu'].split(".")[1]
+                        predictions['tokens'][frame_list[x][0][y]][13] = frame_list[x][1]['lu'].split(".")[2]
 
                     frame_pt = check_length(tokens, frame_list[x][0][-1], 11, False)
                     directed_list = []
@@ -438,7 +414,7 @@ def test(file_seq=None, feature_seq = None, file_name=None, feature_name=None, o
                         frame_pt = check_length(tokens, frame, 11, False)
                         frame_parent = int(check_length(tokens, frame, 9, False))
                         frame_parent_parent = int(check_length(tokens, frame_parent, 9, False))
-                        pos = token[4]
+                        pos = token[2]
                         info = pos.split("+")
                         suffix = None
                         for info_seg in info:
@@ -463,8 +439,8 @@ def test(file_seq=None, feature_seq = None, file_name=None, feature_name=None, o
                                 FE = check_dictionary(to_parent_frame_dic, lu_id, frame_pt, pt, pos)
                             if FE == None and (pt_check[1] == 'CMP' or pt_check[1] == 'OBJ' or pt_check[1] == 'SBJ') and (frame_parent_parent == int(token[0])):
                                 FE = check_dictionary(from_parent_frame_dic, lu_id, frame_pt, pt, pos)
-                        if FE != None:
-                            predictions['tokens'][int(token[0])][-1] = FE
+                        if FE != None and len(predictions['tokens'][int(token[0])])<=14:
+                            predictions['tokens'][int(token[0])].append(FE)
                             directed_list.append(int(token[0]))
 
                     #######################################################
@@ -473,16 +449,18 @@ def test(file_seq=None, feature_seq = None, file_name=None, feature_name=None, o
                     #######################################################            
                     for token in tokens:
                         FE = None
-                        if predictions['tokens'][int(token[0])][-1] == 'O':
+                        if len(predictions['tokens'][int(token[0])])<=14:
                             FE = find_path2(tokens, int(token[0]), predictions, directed_list, False)
                         if FE != None:
-                            predictions['tokens'][int(token[0])][-1] = FE
+                            predictions['tokens'][int(token[0])].append(FE)
 
                     #######################################################
                     # Consider exceptation rules
                     # Third pass
                     ########################################################
                     for token in tokens:
+                        if len(predictions['tokens'][int(token[0])]) >= 15:
+                            continue
                         parent = int(check_length(tokens, int(token[0]), 9 ,False))
                         pt = check_length(tokens, int(token[0]), 11, False)
                         frame_pt = check_length(tokens, frame, 11, False)
@@ -496,10 +474,18 @@ def test(file_seq=None, feature_seq = None, file_name=None, feature_name=None, o
                             if len(short_info_seg) >= 2:
                                 if short_info_seg[1].find('J') != -1:
                                     suffix = short_info_seg[0]
-                        FE = token[-1]
+                        FE = None
                         if FE == None and (pt == 'NP_MOD' or pt == 'VP_MOD' or pt == 'NP_AJT' or pt == 'VP_AJT'or pt =='VNP_MOD' or pt == 'VNP_AJT') and suffix != None:
                             FE = check_dictionary(other_suffix,dic, lu_id, frame_pt, suffix, pos)
-
+                        if FE != None:
+                            predictions['tokens'][int(token[0])].append(FE)
+                        
+                    for token in tokens:
+                        if len(predictions['tokens'][int(token[0])]) <= 14:
+                            while len(predictions['tokens'][int(token[0])]) < 15:
+                                predictions['tokens'][int(token[0])].append('O')
+                        
+                        
                     prediction.append(predictions)
                     lu_id_list.append(lu_id)
             else:

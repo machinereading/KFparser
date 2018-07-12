@@ -8,7 +8,11 @@ def load_tsv(lines):
     dic = {}
     for line in lines:
         line = line.rstrip('\n')
-		line = re.sub("\ufeff", "", line)
+        line = re.sub("\ufeff", "", line)
+        if len(line) >= 1:
+            if line[0] == "\"":
+                line = line[1:-1]
+
         if line.startswith('#'):
             if line[1] == 's':
                 dic = {}
@@ -16,7 +20,7 @@ def load_tsv(lines):
                 sent_ids.append(sent_id)
                 dic['sentid'] = sent_id                
             else:
-                text = line.split(':')[1]
+                text = line[line.find(':')+1:]
                 dic['text'] = text
         else:
             if line != '':

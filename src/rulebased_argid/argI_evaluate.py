@@ -12,12 +12,15 @@ def evaluate(prediction_file_name, label_file_name, covered_output_file, feature
         features = json.load(make_file)
     
     label_datas = argI_data_preprocessor.load_data(label_file_name)
+    
     final_predictions = []
     result_predictions = []
     if CoNLL == True:
         cmpchar = '_'
+        cn = -1
     else:
         cmpchar = 'O'
+        cn = 14
 
     covered_predictions = []
     covered_answers = []
@@ -26,22 +29,29 @@ def evaluate(prediction_file_name, label_file_name, covered_output_file, feature
         existance = 0
         for prediction in predictions[i]:
             for token in prediction['tokens']:
-                if token[-3] != '_' and label_datas[i]['tokens'][int(token[0])][-3] != '_'\
-                and token[-2] == label_datas[i]['tokens'][int(token[0])][-2]:
+                if (CoNLL == True and token[-3] != '_' and label_datas[i]['tokens'][int(token[0])][-3] != '_' \
+                and token[-2] == label_datas[i]['tokens'][int(token[0])][-2]) or\
+                ( CoNLL == False and token[12] != '_' and label_datas[i]['tokens'][int(token[0])][12] != '_' \
+                and token[12]+token[13] == label_datas[i]['tokens'][int(token[0])][12]+label_datas[i]['tokens'][int(token[0])][13]):
+               
                     if existance == 1:
                         break
                     
                     
                     covered_FE = []
                     for token in label_datas[i]['tokens']:
-                        if token[-1] != cmpchar:
-                            if token[-1] not in covered_FE:
-                                covered_FE.append(token[-1])
+                        if token[cn] != cmpchar:
+                            if token[cn] not in covered_FE:
+                                covered_FE.append(token[cn])
                     existance = 1
                     
                     existance2 = 1
                     for json_data in features:
-                        if json_data['lu'] == token[-3] + '.' + token[-2]:
+                        if CoNLL == True:
+                            compared_token = token[-3] + '.' + token[-2]
+                        else:
+                            compared_token = token[12] + '.' + token[13]
+                        if json_data['lu'] == compared_token:
                             for covered in covered_FE:
                                 existance3 = 0
                                 for pattern in json_data['pattern']:
@@ -52,12 +62,10 @@ def evaluate(prediction_file_name, label_file_name, covered_output_file, feature
                     if existance2 == 1:
                         covered_predictions.append(prediction)
                         covered_answers.append(label_datas[i])
-                    
-                    
-                    
                     final_predictions.append(prediction)
                     result_predictions.append(prediction)
                     existance = 1
+                    
         if existance == 0:
             tempdic = {}
             tempdic['sentid'] = label_datas[i]['sentid']
@@ -67,7 +75,7 @@ def evaluate(prediction_file_name, label_file_name, covered_output_file, feature
                 if CoNLL == True:
                     tempdic['tokens'].append(token[0:-3] + ['_', '_', '_'])
                 else:
-                    tempdic['tokens'].append(token[0:-3] + ['_', '_', 'O'])
+                    tempdic['tokens'].append(token[0:12] + ['_', '_', 'O'])
             result_predictions.append(tempdic)
             final_predictions.append([])
     
@@ -81,52 +89,52 @@ def evaluate(prediction_file_name, label_file_name, covered_output_file, feature
     covered_recall_over = 0
     not_covered_recall_under = 0
     
+    
     for i in range(0, len(final_predictions)):
         if final_predictions[i] == []:
             for token in label_datas[i]['tokens']:
-                if token[-1] != cmpchar:
+                if token[cn] != cmpchar:
                     not_covered_recall_under += 1
         else:
             for token in final_predictions[i]['tokens']:
-                label_datas[i]['tokens'][int(token[0])][-1] = label_datas[i]['tokens'][int(token[0])][-1].replace("B_","")
-                label_datas[i]['tokens'][int(token[0])][-1] = label_datas[i]['tokens'][int(token[0])][-1].replace("I_","")
-                label_datas[i]['tokens'][int(token[0])][-1] = label_datas[i]['tokens'][int(token[0])][-1].replace("O_","")
-                label_datas[i]['tokens'][int(token[0])][-1] = label_datas[i]['tokens'][int(token[0])][-1].replace("S_","")
+                label_datas[i]['tokens'][int(token[0])][cn] = label_datas[i]['tokens'][int(token[0])][cn].replace("B_","")
+                label_datas[i]['tokens'][int(token[0])][cn] = label_datas[i]['tokens'][int(token[0])][cn].replace("I_","")
+                label_datas[i]['tokens'][int(token[0])][cn] = label_datas[i]['tokens'][int(token[0])][cn].replace("O_","")
+                label_datas[i]['tokens'][int(token[0])][cn] = label_datas[i]['tokens'][int(token[0])][cn].replace("S_","")
                 
                 
-                if token[-1] != cmpchar:
+                if token[cn] != cmpchar:
                     precision_under += 1
-                if token[-1] != cmpchar and token[-1] == label_datas[i]['tokens'][int(token[0])][-1]:
+                if token[cn] != cmpchar and token[cn] == label_datas[i]['tokens'][int(token[0])][cn]:
                     precision_over += 1
             for token in label_datas[i]['tokens']:
-                final_predictions[i]['tokens'][int(token[0])][-1] = final_predictions[i]['tokens'][int(token[0])][-1].replace("B_","")
-                final_predictions[i]['tokens'][int(token[0])][-1] = final_predictions[i]['tokens'][int(token[0])][-1].replace("I_","")
-                final_predictions[i]['tokens'][int(token[0])][-1] = final_predictions[i]['tokens'][int(token[0])][-1].replace("O_","")
-                final_predictions[i]['tokens'][int(token[0])][-1] = final_predictions[i]['tokens'][int(token[0])][-1].replace("S_","")
+                final_predictions[i]['tokens'][int(token[0])][cn] = final_predictions[i]['tokens'][int(token[0])][cn].replace("B_","")
+                final_predictions[i]['tokens'][int(token[0])][cn] = final_predictions[i]['tokens'][int(token[0])][cn].replace("I_","")
+                final_predictions[i]['tokens'][int(token[0])][cn] = final_predictions[i]['tokens'][int(token[0])][cn].replace("O_","")
+                final_predictions[i]['tokens'][int(token[0])][cn] = final_predictions[i]['tokens'][int(token[0])][cn].replace("S_","")
                 if token[-1] != cmpchar:
                     recall_under += 1
-                if token[-1] != cmpchar and token[-1] == final_predictions[i]['tokens'][int(token[0])][-1]:
+                if token[-1] != cmpchar and token[cn] == final_predictions[i]['tokens'][int(token[0])][cn]:
                     recall_over += 1
 
     for i in range(0, len(covered_predictions)):
         for token in covered_predictions[i]['tokens']:
-            covered_answers[i]['tokens'][int(token[0])][-1] = covered_answers[i]['tokens'][int(token[0])][-1].replace("B_","")
-            covered_answers[i]['tokens'][int(token[0])][-1] = covered_answers[i]['tokens'][int(token[0])][-1].replace("I_","")
-            covered_answers[i]['tokens'][int(token[0])][-1] = covered_answers[i]['tokens'][int(token[0])][-1].replace("O_","")
-            covered_answers[i]['tokens'][int(token[0])][-1] = covered_answers[i]['tokens'][int(token[0])][-1].replace("S_","")
-
+            covered_answers[i]['tokens'][int(token[0])][cn] = covered_answers[i]['tokens'][int(token[0])][cn].replace("B_","")
+            covered_answers[i]['tokens'][int(token[0])][cn] = covered_answers[i]['tokens'][int(token[0])][cn].replace("I_","")
+            covered_answers[i]['tokens'][int(token[0])][cn] = covered_answers[i]['tokens'][int(token[0])][cn].replace("O_","")
+            covered_answers[i]['tokens'][int(token[0])][cn] = covered_answers[i]['tokens'][int(token[0])][cn].replace("S_","")
             if token[-1] != cmpchar:
                 covered_precision_under += 1
             if token[-1] != cmpchar and token[-1] == covered_answers[i]['tokens'][int(token[0])][-1]:
                 covered_precision_over += 1
         for token in covered_answers[i]['tokens']:
-            covered_predictions[i]['tokens'][int(token[0])][-1] = covered_predictions[i]['tokens'][int(token[0])][-1].replace("B_","")
-            covered_predictions[i]['tokens'][int(token[0])][-1] = covered_predictions[i]['tokens'][int(token[0])][-1].replace("I_","")
-            covered_predictions[i]['tokens'][int(token[0])][-1] = covered_predictions[i]['tokens'][int(token[0])][-1].replace("O_","")
-            covered_predictions[i]['tokens'][int(token[0])][-1] = covered_predictions[i]['tokens'][int(token[0])][-1].replace("S_","")
-            if token[-1] != cmpchar:
+            covered_predictions[i]['tokens'][int(token[0])][cn] = covered_predictions[i]['tokens'][int(token[0])][cn].replace("B_","")
+            covered_predictions[i]['tokens'][int(token[0])][cn] = covered_predictions[i]['tokens'][int(token[0])][cn].replace("I_","")
+            covered_predictions[i]['tokens'][int(token[0])][cn] = covered_predictions[i]['tokens'][int(token[0])][cn].replace("O_","")
+            covered_predictions[i]['tokens'][int(token[0])][cn] = covered_predictions[i]['tokens'][int(token[0])][cn].replace("S_","")
+            if token[cn] != cmpchar:
                 covered_recall_under += 1
-            if token[-1] != cmpchar and token[-1] == covered_predictions[i]['tokens'][int(token[0])][-1]:
+            if token[cn] != cmpchar and token[cn] == covered_predictions[i]['tokens'][int(token[0])][cn]:
                 covered_recall_over += 1                
                     
                     

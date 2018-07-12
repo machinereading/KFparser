@@ -1,23 +1,26 @@
 import json
 import argI_data_preprocessor
 import re
-import kfn
+import argI_kfn
 
 def load_data(file_name):
     result = argI_data_preprocessor.load_data(file_name)
     #result = training + test
     return result
 
-def get_target(sent_list):
+def get_target(sent_list, CoNLL):
     token_list = []
     frame = 'None'
     for i in sent_list:
         #print(i)
-        if len(i) <=3:
-            print("error sentence ", sent_list)
-        if i[-3] != '_':
-            token_list.append(i[1])
-            frame = i[-2]
+        if CoNLL == False:
+            if i[12] != '_':
+                token_list.append(i[1])
+                frame = i[12] +'.' +i[13]
+        else:
+            if i[-3] != '_':
+                token_list.append(i[1])
+                frame = i[-2]
     target = ' '.join(token_list)
     spc = [',','.','!','?']
     if len(target) >1:
@@ -25,12 +28,12 @@ def get_target(sent_list):
             target = re.sub('[,.?!]', '', target)
     return target, frame
 
-def get_lu_id(sent_list):
-    target, frame = get_target(sent_list)
-    lu_id = kfn.surface_to_lu_id(target, frame)
+def get_lu_id(sent_list, CoNLL):
+    target, frame = get_target(sent_list, CoNLL)
+    lu_id = argI_kfn.surface_to_lu_id(target, frame, CoNLL)
     return lu_id
 
-def genData(data):
+def genData(data, CoNLL=True):
     result = []
     koreanFN = []
     for data_seg in data:
@@ -38,10 +41,10 @@ def genData(data):
     # koreanFN = trainign data in CONLL format
     for sent_list in koreanFN:
         each_lu = {}
-        lu_id = get_lu_id(sent_list)
+        lu_id = get_lu_id(sent_list, CoNLL)
         if lu_id == False:
             continue
-        lu = kfn.lu(lu_id)
+        lu = argI_kfn.lu(lu_id)
         each_lu['lu_id'] = lu['lu_id']
         # by this process, 'LU' is identified in training data
         isIn = False

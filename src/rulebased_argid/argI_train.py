@@ -134,7 +134,10 @@ def train(file_seq=None, output_file = './feature_file.json', file_name = None, 
             temp['tokens'] = file
             datas.append(temp)
     
-    feature_list = argI_Load_KFN.genData(datas)
+    feature_list = argI_Load_KFN.genData(datas, CoNLL)
+    with open("temp_feature.json", "w", encoding="utf-8") as make_file:
+        json.dump(feature_list, make_file, ensure_ascii=False, indent = 4)
+    
     index = 0
     to_frame = []
     from_frame = []
@@ -351,11 +354,10 @@ def train(file_seq=None, output_file = './feature_file.json', file_name = None, 
             FE_tokens = []
 
             for token in tokens:
-                if token[-1] != 'O':
-                    if token[4] != 'SS':
-                        FE_tokens.append(int(token[0]))
+                if token[14] != 'O':
+                    FE_tokens.append(int(token[0]))
 
-                if token[-3] != '_' and token[4] != 'SS':
+                if token[12] != '_':
                     frame_list.append(int(token[0]))
             if frame_list == []:
                 print(tokens)
@@ -365,14 +367,15 @@ def train(file_seq=None, output_file = './feature_file.json', file_name = None, 
                 for frame in frame_list:
                     standard_frame = frame
                     point = frame
-                    while tokens[point][-3] != '_' and point != -1:
+                    while tokens[point][12] != '_' and point != -1:
                         point = int(tokens[point][9])
-                        if tokens[point][-3] != '_' and point != -1:
+                        if tokens[point][12] != '_' and point != -1:
                             standard_frame = point
                     temp_frame.append(standard_frame)
                 standard_frame = temp_frame[0]
             else:
                 standard_frame = frame_list[0]
+                
             surface_form = ""
             for frame in frame_list:
                 surface_form += tokens[frame][1] + ' '
@@ -380,18 +383,17 @@ def train(file_seq=None, output_file = './feature_file.json', file_name = None, 
 
             usage = check_length(tokens, standard_frame, 11, False)        
 
-            lexeme_candidate = []
-            leninf = tokens[standard_frame][2].split('+')
-            for inf in leninf:
-                info = inf.split("/")
-                if info[1].find('N')!=-1 or info[1] == 'VV' or info[1] == 'VA':
-                    lexeme_candidate.append(info[0])
             
+            lu_id = None
             for feature in feature_list:
-                if surface_form in feature['surface_forms'] or feature['lexeme'] in lexeme_candidate:
-                    if feature['lu'] == tokens[standard_frame][-3] + '.' + tokens[standard_frame][-2]:
-                        lu_id = feature['lu_id']
-
+                if feature['lu'] == tokens[standard_frame][12] + '.' + tokens[standard_frame][13]:
+                    lu_id = feature['lu_id']
+                    
+            if lu_id == None:
+                print("standard_frame: ", standard_frame)
+                for token in tokens:
+                    print(token)
+                print(tokens[standard_frame][12] + '.' + tokens[standard_frame][13])
 
             to_frame_index = []
             from_frame_index = []
