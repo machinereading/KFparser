@@ -4,6 +4,7 @@
 # In[31]:
 
 import json
+import os
 
 def load_tsv(lines):
     result = []
@@ -27,20 +28,20 @@ def load_tsv(lines):
     return result, sent_num
 
 def data_stat():
-    print('### loading data now...')
-    with open('./koreanframenet/data/training.tsv','r') as f:
+    dir_path = os.path.dirname(os.path.abspath(__file__))
+    with open(dir_path+'/koreanframenet/data/training.tsv','r') as f:
         d = f.readlines()
         training, n_training = load_tsv(d)
         #print(len(training_fe))
-    with open('./koreanframenet/data/test.tsv','r') as f:
+    with open(dir_path+'/koreanframenet/data/test.tsv','r') as f:
         d = f.readlines()
         test, n_test = load_tsv(d)
         #print(len(test))
-    with open('./koreanframenet/data/dev.tsv','r') as f:
+    with open(dir_path+'/koreanframenet/data/dev.tsv','r') as f:
         d = f.readlines()
         dev, n_dev = load_tsv(d)
         #print(len(training))
-    with open('./koreanframenet/data/exemplar.tsv','r') as f:
+    with open(dir_path+'/koreanframenet/data/exemplar.tsv','r') as f:
         d = f.readlines()
         exemplar, n_exemplar = load_tsv(d)
         
@@ -61,20 +62,21 @@ def data_stat():
     print(' - number of annotations:', len(exemplar), '\n')
 
 def load_data():
+    dir_path = os.path.dirname(os.path.abspath(__file__))
     print('### loading data now...')
-    with open('./koreanframenet/data/training.tsv','r') as f:
+    with open(dir_path+'/koreanframenet/data/training.tsv','r') as f:
         d = f.readlines()
         training, n_training = load_tsv(d)
         #print(len(training_fe))
-    with open('./koreanframenet/data/test.tsv','r') as f:
+    with open(dir_path+'/koreanframenet/data/test.tsv','r') as f:
         d = f.readlines()
         test, n_test = load_tsv(d)
         #print(len(test))
-    with open('./koreanframenet/data/dev.tsv','r') as f:
+    with open(dir_path+'/koreanframenet/data/dev.tsv','r') as f:
         d = f.readlines()
         dev, n_dev = load_tsv(d)
         #print(len(training))
-    with open('./koreanframenet/data/exemplar.tsv','r') as f:
+    with open(dir_path+'/koreanframenet/data/exemplar.tsv','r') as f:
         d = f.readlines()
         exemplar, n_exemplar = load_tsv(d)
         

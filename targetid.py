@@ -9,7 +9,7 @@
 from koreanframenet import kfn
 import preprocessor
 import re
-import etri
+from src import etri
 import posChanger
 
 

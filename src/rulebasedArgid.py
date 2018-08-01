@@ -172,7 +172,7 @@ def argid(file_seq = None, feature = None):
                 lu_id = json_data['lu_id']
 
         if frame != None:
-                        frame_pt = check_length(tokens, frame, 11, False)
+            frame_pt = check_length(tokens, frame, 11, False)
             directed_list = []
             #######################################################
             # Calculate directed tokens
@@ -259,7 +259,7 @@ def argid(file_seq = None, feature = None):
 
             final_prediction.append(predictions['tokens'])
         else:
-                        final_prediction.append(data['tokens'])
+            final_prediction.append(data['tokens'])
         index += 1    
 
     

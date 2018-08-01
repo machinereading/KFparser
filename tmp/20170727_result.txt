@@ -1,0 +1,232 @@
+마침내 돌아온 한국 테니스 '간판' 정현(22·한국체대)이 복귀전에서 승리를 수확했다.
+frame:Arriving	frdf:lu	"돌아오다.v"	;
+	fe:theme	"마침내 돌아온 한국 테니스 '간판' 정현(22·한국체대)이"	.
+frame:Finish_competition	frdf:lu	"승리.n"	.
+
+세계랭킹 23위인 정현은 26일(한국시각) 미국 조지아주 애틀랜타에서 벌어진 남자프로테니스(ATP) 투어 BB&T 애틀랜타오픈 남자단식 2회전에서 세계랭킹 65위에 위치한 테일러 프리츠(미국)를 2-0(6-4, 7-6<7-5>)으로 꺾고 8강전에 진출했다.
+frame:Origin	frdf:lu	"미국.n"	;
+	fe:entity	"미국 조지아주"	.
+frame:Being_located	frdf:lu	"위치하다.v"	;
+	fe:location	"미국 조지아주 애틀랜타에서 벌어진 남자프로테니스(ATP) 투어 BB&T 애틀랜타오픈 남자단식 2회전에서 세계랭킹 65위에"	.
+frame:Locale_by_use	frdf:lu	"진출하다.v"	.
+
+정현은 1세트에서 4-4로 팽팽한 접전을 벌이다 프리츠의 서브 게임을 브레이크하는데 성공, 5-4로 앞서면서 승기를 가져왔다.
+frame:Success_or_failure	frdf:lu	"성공.n"	.
+frame:Bringing	frdf:lu	"가져오다.v"	;
+	fe:theme	"승기를"	.
+
+2세트에서는 타이브레이크에서 5-5 균형을 깨는 득점에 승리를 확정하는 득점까지 연달아 얻으면서 경기를 마쳤다.
+frame:Being_operational	frdf:lu	"깨다.v"	.
+frame:Finish_competition	frdf:lu	"승리.n"	.
+frame:Getting	frdf:lu	"얻다.v"	;
+	fe:theme	"2세트에서는 타이브레이크에서 5-5 균형을 깨는 득점에 승리를 확정하는 득점까지 연달아"	.
+frame:Economy	frdf:lu	"경기.n"	.
+frame:Activity_finish	frdf:lu	"마치다.v"	.
+
+정현은 이번 대회에서 1회전을 부전승으로 통과했으며 8강전에서는 랭킹 53위 라이언 해리슨(미국)과 랭킹 71위 루카시 라츠코(슬로바키아)의 경기 승자와 만난다.
+frame:Relative_time	frdf:lu	"이번.n"	.
+frame:Competition	frdf:lu	"대회.n"	.
+frame:Process_end	frdf:lu	"통과하다.v"	;
+	fe:process	"정현은"	.
+frame:Economy	frdf:lu	"경기.n"	.
+frame:Come_together	frdf:lu	"만나다.v"	.
+
+한국과학기술연구원(KIST)의 주도 아래 진행된 연구를 통해서 김범준·김지한 교수 등이 초미세먼지를 99.9%까지 걸러내는 세라믹 필터를 개발했다.
+frame:Locative_relation	frdf:lu	"아래.n"	;
+	fe:ground	"한국과학기술연구원(KIST)의 주도"	.
+frame:Process_continue	frdf:lu	"진행되다.v"	.
+frame:Research	frdf:lu	"연구.n"	;
+	fe:topic	"한국과학기술연구원(KIST)의 주도 아래 진행된"	.
+frame:Means	frdf:lu	"통하다.v"	;
+	fe:means	"한국과학기술연구원(KIST)의 주도 아래 진행된 연구를"	.
+frame:Body_parts	frdf:lu	"등.n"	;
+	fe:body_part	"김범준·김지한 교수 등이"	.
+frame:Cause_to_make_progress	frdf:lu	"개발하다.v"	;
+	fe:project	"한국과학기술연구원(KIST)의 주도 아래 진행된 연구를 통해서 김범준·김지한 교수 등이 초미세먼지를 99.9%까지 걸러내는 세라믹 필터를"	.
+
+질화붕소나노튜브(BNNT)를 제작해 초미세먼지의 백 분의 1크기인 25나노미터 입자까지 포집할 수 있고 섭씨 4백도의 고온으로 2시간 정도 가열하면 필터를 뺀 입자를 연소 및 분해할 수 있다.
+frame:Capability	frdf:lu	"수.n"	;
+	fe:event	"질화붕소나노튜브(BNNT)를 제작해 초미세먼지의 백 분의 1크기인 25나노미터 입자까지 포집할 수 있고"	.
+frame:Existence	frdf:lu	"있다.a"	;
+	fe:entity	"질화붕소나노튜브(BNNT)를 제작해 초미세먼지의 백 분의 1크기인 25나노미터 입자까지 포집할 수"	.
+frame:Relational_quantity	frdf:lu	"정도.n"	.
+frame:Capability	frdf:lu	"수.n"	;
+	fe:event	"질화붕소나노튜브(BNNT)를 제작해 초미세먼지의 백 분의 1크기인 25나노미터 입자까지 포집할 수 있고 섭씨 4백도의 고온으로 2시간 정도 가열하면 필터를 뺀 입자를 연소 및 분해할 수 있다."	.
+frame:Existence	frdf:lu	"있다.a"	;
+	fe:entity	"질화붕소나노튜브(BNNT)를 제작해 초미세먼지의 백 분의 1크기인 25나노미터 입자까지 포집할 수 있고 섭씨 4백도의 고온으로 2시간 정도 가열하면 필터를 뺀 입자를 연소 및 분해할 수"	.
+
+필터는 재활용도 가능하다.
+frame:Likelihood	frdf:lu	"가능하다.a"	;
+	fe:hypothetical_event	"필터는 재활용도"	.
+
+이번 연구 결과는 국제 학술지인 ‘저널 오브 멤브레인 사이언스’ 최신호에 실렸다.
+frame:Relative_time	frdf:lu	"이번.n"	.
+frame:Research	frdf:lu	"연구.n"	.
+frame:Causation	frdf:lu	"결과.n"	;
+	fe:cause	"국제 학술지인 ‘저널 오브 멤브레인 사이언스’ 최신호에"	.
+frame:Political_locales	frdf:lu	"국제.n"	.
+frame:Age	frdf:lu	"최신.n"	.
+frame:Choosing	frdf:lu	"실리다.v"	;
+	fe:cognizer	"국제 학술지인 ‘저널 오브 멤브레인 사이언스’ 최신호에"	.
+
+《핀과 제이크의 어드벤처 타임》의 첫 번째 시즌은 미국 카툰 네트워크에서 방영되었다.
+frame:Origin	frdf:lu	"미국.n"	;
+	fe:entity	"미국 카툰"	.
+frame:Network	frdf:lu	"네트워크.n"	.
+
+프레드레이터 스튜디오에서 제작한 《어드벤처 타임》의 파일럿은 닉툰스의 단편 애니메이션 소개 프로그램 《랜덤! 카툰스》를 통해 방영되었다.
+frame:Project	frdf:lu	"프로그램.n"	;
+	fe:agent	"닉툰스의"	;
+	fe:salient_entity	"단편 애니메이션 소개"	.
+frame:Means	frdf:lu	"통하다.v"	;
+	fe:agent	"프레드레이터 스튜디오에서 제작한 《어드벤처 타임》의 파일럿은 닉툰스의 단편 애니메이션 소개 프로그램 《랜덤! 카툰스》를 통해 방영되었다."	;
+	fe:means	"닉툰스의 단편 애니메이션 소개 프로그램 《랜덤! 카툰스》를"	.
+
+이후 핀과 제이크의 어드벤처 타임가 인터넷 상에서 큰 인기를 얻기 시작하자, 카툰 네트워크는 이 작품을 장편 시리즈로 만들어 2010년 3월 11일에 시범 방송을 하고, 2010년 4월 5일에 정식 방영 했다.
+frame:Time_vector	frdf:lu	"이후.n"	.
+frame:Finish_competition	frdf:lu	"상.n"	.
+frame:Size	frdf:lu	"크다.a"	.
+frame:Desirability	frdf:lu	"인기.n"	.
+frame:Getting	frdf:lu	"얻다.v"	;
+	fe:recipient	"핀과 제이크의 어드벤처 타임가"	;
+	fe:theme	"큰 인기를"	.
+frame:Activity_start	frdf:lu	"시작하다.v"	;
+	fe:activity	"이후 핀과 제이크의 어드벤처 타임가 인터넷 상에서 큰 인기를 얻기"	.
+frame:Network	frdf:lu	"네트워크.n"	.
+frame:Labor_product	frdf:lu	"작품.n"	.
+frame:Intentionally_create	frdf:lu	"만들다.v"	;
+	fe:creator	"카툰 네트워크는"	;
+	fe:created_entity	"이후 핀과 제이크의 어드벤처 타임가 인터넷 상에서 큰 인기를 얻기 시작하자, 카툰 네트워크는 이 작품을 장편 시리즈로 만들어 2010년 3월 11일에 시범 방송을 하고,"	.
+
+핀과 제이크의 어드벤처 타임은 종말 이후의 세상인 우 랜드에서 사는 인간 소년 ‘핀’과, 마법의 힘으로 몸의 크기와 모양을 자유자재로 변화시킬 수 있는 개 ‘제이크’의 모험을 다루고 있다.
+frame:Death	frdf:lu	"종말.n"	.
+frame:Time_vector	frdf:lu	"이후.n"	.
+frame:Political_locales	frdf:lu	"세상.n"	.
+frame:Residence	frdf:lu	"살다.v"	;
+	fe:location	"종말 이후의 세상인 우 랜드에서"	.
+frame:People	frdf:lu	"인간.n"	.
+frame:People_by_age	frdf:lu	"소년.n"	.
+frame:Capability	frdf:lu	"힘.n"	;
+	fe:event	"핀과 제이크의 어드벤처 타임은 종말 이후의 세상인 우 랜드에서 사는 인간 소년 ‘핀’과, 마법의 힘으로 몸의 크기와 모양을 자유자재로 변화시킬"	.
+frame:Body_parts	frdf:lu	"몸.n"	.
+frame:Shapes	frdf:lu	"모양.n"	.
+frame:Cause_change	frdf:lu	"변화시키다.v"	;
+	fe:entity	"몸의 크기와 모양을"	.
+frame:Capability	frdf:lu	"수.n"	;
+	fe:event	"핀과 제이크의 어드벤처 타임은 종말 이후의 세상인 우 랜드에서 사는 인간 소년 ‘핀’과, 마법의 힘으로 몸의 크기와 모양을 자유자재로 변화시킬 수"	.
+frame:Existence	frdf:lu	"있다.a"	;
+	fe:entity	"핀과 제이크의 어드벤처 타임은 종말 이후의 세상인 우 랜드에서 사는 인간 소년 ‘핀’과, 마법의 힘으로 몸의 크기와 모양을 자유자재로 변화시킬 수"	.
+frame:Obviousness	frdf:lu	"개.n"	.
+frame:Travel	frdf:lu	"모험.n"	;
+	fe:traveler	"핀과 제이크의 어드벤처 타임은 종말 이후의 세상인 우 랜드에서 사는 인간 소년 ‘핀’과, 마법의 힘으로 몸의 크기와 모양을 자유자재로 변화시킬 수 있는 개 ‘제이크’의"	.
+frame:Topic	frdf:lu	"다루다.v"	;
+	fe:topic	"핀과 제이크의 어드벤처 타임은 종말 이후의 세상인 우 랜드에서 사는 인간 소년 ‘핀’과, 마법의 힘으로 몸의 크기와 모양을 자유자재로 변화시킬 수 있는 개 ‘제이크’의 모험을"	.
+
+첫 번째 시즌의 첫 에피소드인 〈Slumber Party Panic〉은 250만 명의 시청자 수를 기록하며 전년도 카툰 네트워크의 다른 프로그램에 비해 상당한 시청자 수 상승을 보였다.
+frame:People	frdf:lu	"명.n"	;
+	fe:descriptor	"250만"	.
+frame:Capability	frdf:lu	"수.n"	.
+frame:Placing	frdf:lu	"기록하다.v"	;
+	fe:agent	"첫 번째 시즌의 첫 에피소드인 〈Slumber Party Panic〉은"	;
+	fe:theme	"250만 명의 시청자 수를"	.
+frame:Network	frdf:lu	"네트워크.n"	;
+	fe:descriptor	"카툰"	.
+frame:Project	frdf:lu	"프로그램.n"	;
+	fe:agent	"카툰 네트워크의"	.
+frame:Evaluative_comparison	frdf:lu	"비하다.v"	;
+	fe:profiled_item	"카툰 네트워크의 다른 프로그램에"	.
+frame:Importance	frdf:lu	"상당하다.a"	.
+frame:Capability	frdf:lu	"수.n"	.
+frame:Appeal	frdf:lu	"보이다.v"	;
+	fe:phenomenon	"상당한 시청자 수 상승을"	;
+	fe:characterization	"첫 번째 시즌의 첫 에피소드인 〈Slumber Party Panic〉은 250만 명의 시청자 수를 기록하며 전년도 카툰 네트워크의 다른 프로그램에 비해"	.
+
+이 시즌은 2010년 9월 27일 〈Gut Grinder〉를 끝으로 종영 되었다.
+frame:Process_end	frdf:lu	"끝.n"	.
+
+핀과 제이크의 어드벤처 타임의 방영이 끝나자 이 작품은 높은 평가를 받음과 동시에 두터운 인기를 형성하기 시작했다.
+frame:Process_end	frdf:lu	"끝나다.v"	;
+	fe:process	"핀과 제이크의 어드벤처 타임의 방영이"	.
+frame:Labor_product	frdf:lu	"작품.n"	.
+frame:Position_on_a_scale	frdf:lu	"높다.a"	;
+	fe:item	"높은 평가를"	.
+frame:Assessing	frdf:lu	"평가.n"	.
+frame:Identicality	frdf:lu	"동시.n"	.
+frame:Desirability	frdf:lu	"인기.n"	.
+frame:Creating	frdf:lu	"형성하다.v"	.
+frame:Activity_start	frdf:lu	"시작하다.v"	;
+	fe:activity	"핀과 제이크의 어드벤처 타임의 방영이 끝나자 이 작품은 높은 평가를 받음과 동시에 두터운 인기를 형성하기"	.
+
+2010년에는 〈My Two Favorite People〉이 프라임타임 에미상 ‘뛰어난 단편 애니메이션 프로그램’의 후보에 오르기도 했다.
+frame:Project	frdf:lu	"프로그램.n"	;
+	fe:goal	"‘뛰어난"	;
+	fe:salient_entity	"프라임타임 에미상 ‘뛰어난 단편 애니메이션"	.
+frame:Motion_directional	frdf:lu	"오르다.v"	;
+	fe:theme	"〈My Two Favorite People〉이"	;
+	fe:degree	"2010년에는"	;
+	fe:goal	"프라임타임 에미상 ‘뛰어난 단편 애니메이션 프로그램’의 후보에"	.
+
+이우(李鍝, 1912년 11월 15일 ~ 1945년 8월 7일)는 대한제국 황실의 후예이자 일본 제국의 군인이다.
+frame:Kinship	frdf:lu	"후예.n"	.
+frame:Origin	frdf:lu	"일본.n"	.
+frame:Political_locales	frdf:lu	"제국.n"	;
+	fe:name	"일본"	.
+frame:People_by_vocation	frdf:lu	"군인.n"	.
+
+조선의 제26대 왕이자 대한제국의 초대 황제 고종의 다섯째 아들 의친왕 이강의 차남이다.
+frame:Leadership	frdf:lu	"황제.n"	;
+	fe:governed	"초대"	.
+frame:Kinship	frdf:lu	"아들.n"	;
+	fe:ego	"대한제국의 초대 황제 고종의 다섯째"	.
+
+본관은 전주, 초명은 성길이며, 아호는 염석, 상운이다.
+
+1917년에 흥선대원군의 장손 이준용이 사망하자 당숙의 양자로 입적되어 운현궁의 4대 종주가 되었다.
+frame:Killing	frdf:lu	"사망하다.v"	;
+	fe:victim	"흥선대원군의 장손 이준용이"	.
+
+운현궁을 상속한 후에 공위를 세습 받아 ‘이우공 전하’라는 공족의 칭호를 사용하게 되었다. 사망 이후에 사시인 흥영군에 추봉되었다.
+frame:Time_vector	frdf:lu	"후.n"	;
+	fe:event	"후에 공위를 세습 받아"	;
+	fe:landmark_event	"운현궁을 상속한"	.
+frame:Using	frdf:lu	"사용하다.v"	;
+	fe:purpose	"운현궁을 상속한 후에 공위를 세습 받아"	;
+	fe:instrument	"‘이우공 전하’라는 공족의 칭호를"	.
+
+7월 24일, 그리스 아티키 주에서 발생한 산불로 76명이 사망하고 187명이 부상당했다.
+frame:Origin	frdf:lu	"그리스.n"	;
+	fe:entity	"그리스 아티키"	.
+frame:Political_locales	frdf:lu	"주.n"	.
+frame:Event	frdf:lu	"발생하다.v"	.
+frame:Killing	frdf:lu	"사망하다.v"	;
+	fe:victim	"76명이"	.
+frame:Cause_harm	frdf:lu	"부상당하다.v"	;
+	fe:victim	"187명이"	.
+
+7월 23일, 라오스 수력발전소의 보조댐이 붕괴해 20여명이 사망하고 수백 명이 실종되었다.
+frame:Killing	frdf:lu	"사망하다.v"	;
+	fe:victim	"20여명이"	;
+	fe:time	"7월 23일, 라오스 수력발전소의 보조댐이 붕괴해"	.
+frame:People	frdf:lu	"명.n"	;
+	fe:descriptor	"수백"	.
+
+7월 15일, FIFA 월드컵 결승전에서 프랑스(사진)가 크로아티아를 상대로 우승하였다.
+frame:Competition	frdf:lu	"결승전.n"	.
+frame:Origin	frdf:lu	"프랑스.n"	.
+frame:Aiming	frdf:lu	"상대.n"	.
+
+7월 10일, 태국 북부의 동굴에서 조난됐던 유소년 축구단 및 코치 13명이 전원 구조되었다.
+frame:Part_orientational	frdf:lu	"북부.n"	.
+frame:Natural_features	frdf:lu	"동굴.n"	;
+	fe:container_possessor	"태국 북부의"	.
+frame:Timespan	frdf:lu	"유소년.n"	.
+
+7월 5일, 일본에 내린 호우로 217명 이상이 사망하였다.
+frame:Origin	frdf:lu	"일본.n"	.
+frame:Motion_directional	frdf:lu	"내리다.v"	.
+frame:Increment	frdf:lu	"이상.n"	;
+	fe:class	"217명 이상이"	.
+frame:Killing	frdf:lu	"사망하다.v"	;
+	fe:victim	"217명 이상이"	.
+
+#sent: 27, #sent_f: 26, #sent_fe: 24, #frame: 109, #fe: 68

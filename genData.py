@@ -1,20 +1,26 @@
 
 # coding: utf-8
 
-# In[1]:
+# In[17]:
+
 
 from koreanframenet import kfn
 import json
-import etri
+from src import etri
 import random
+import os
+import sys
+import preprocessor
 
 
 # In[2]:
 
+
 def load_kfn():
-    with open('./koreanframenet/resource/KFN_lus.json', 'r') as f:
+    dir_path = os.getcwd()
+    with open(dir_path+'/koreanframenet/resource/KFN_lus.json', 'r') as f:
         kolu = json.load(f)
-    with open('./koreanframenet/resource/KFN_annotations.json','r') as f:
+    with open(dir_path+'/koreanframenet/resource/KFN_annotations.json','r') as f:
         koanno = json.load(f)
     print('### load KFN ###')
     return kolu, koanno
@@ -23,7 +29,8 @@ kolu, koanno = load_kfn()
 
 # # Step 1. Generate Sentence List of TRN, TST, and DEV
 
-# In[41]:
+# In[23]:
+
 
 def gen_list():
     sent_ids = []
@@ -32,148 +39,28 @@ def gen_list():
         sent_ids.append(sent_id)
     random.shuffle(sent_ids)
     
-    tst = sent_ids[:3500]
-    trn = sent_ids[3500:]
+    tst = sent_ids[:1250]
+    dev = sent_ids[1250:1450]
+    trn = sent_ids[1400:]
 
     result = {}
     result['trn'] = trn
     result['tst'] = tst
+    result['dev'] = dev
     #result['dev'] = dev
-    print(len(trn), len(tst))
+    sys.stderr.write("\nKOREAN FRAMENET DATA (CoNLL format) GENERATION\n_____________________\n")
+    sys.stderr.write("\n...shuffle Korean FrameNet full-text annotation sentences...\n")
+    sys.stderr.write("training data: \t" + str(len(trn)) + ' sents\n')
+    sys.stderr.write("dev data:      \t" + str(len(dev)) + '  sents\n')
+    sys.stderr.write("test data:     \t" + str(len(tst)) + ' sents\n')
     return result
 sent_list = gen_list()
 
 
-# In[42]:
-
-def get_luid(anno_id):
-    luid = False
-    for lu in kolu:
-        if anno_id in lu['ko_annotation_id']:
-            luid = lu['lu_id']
-            #print(luid)
-            break
-    return luid
-
-def get_fes(deno):
-    fes = []
-    for d in deno:
-        if d['obj'] != 'target':
-            fe = d['obj'].lower()
-            fes.append(fe)
-    fes = list(set(fes))
-    return fes 
-
-def get_lus(data):
-    result = []
-    for i in koanno:
-        sent_id = i['text']['sent_id']
-        lu_list = []
-        if sent_id in data:
-            annos = i['frameAnnotation']['ko_annotations']
-            for a in annos:
-                anno_id = a['ko_annotation_id']
-                lu = get_luid(anno_id)
-                deno = a['denotations']
-                lu_fes = get_fes(deno)
-                if lu != False:
-                    lu_dic = {}
-                    lu_dic['luid'] = lu
-                    lu_dic['fes'] = lu_fes
-                    lu_list.append(lu_dic)
-                    
-            d = {}
-            d['sent_id'] = sent_id
-            d['lus'] = lu_list
-            result.append(d)
-    #lus = list(set(lus))
-    return result
-
-def gen_lus():
-    trn, tst= sent_list['trn'], sent_list['tst']
-    d = {}
-    d['trn'] = get_lus(trn)
-    print('trn is done')
-    d['tst'] = get_lus(tst)
-    print('tst is done')
-#     d['dev'] = get_lus(dev)
-#     print('dev is done')
-    
-    with open('./data/data_lus.json','w') as f:
-        json.dump(d, f, ensure_ascii=False, indent=4)
-
-#gen_lus()
-
-
-# In[51]:
-
-with open('./data/data_lus.json','r') as f:
-    data_lus = json.load(f)
-
-def check_lus():
-    lus_in_trn = []
-    for trn_sent in data_lus['trn']:
-        for i in trn_sent['lus']:
-            luid, fes = i['luid'], i['fes']
-            tu = (luid, fes)
-            lus_in_trn.append(tu)        
-
-    sent_list = []
-    sent_count, anno_count = 0,0 
-    for tst_sent in data_lus['tst']:
-        count = 0
-        sent_id = tst_sent['sent_id']
-        for i in tst_sent['lus']:
-            luid, fes = i['luid'], i['fes']
-            check = False
-            for j in lus_in_trn:
-                if luid == j[0]:
-                    check_list = []
-                    for fe in fes:
-                        if fe in j[1]:
-                            check_list.append('t')
-                    if len(check_list) == len(fes):
-                        check = True
-                        #anno_count += 1
-                        break
-            if check == True:
-                anno_count += 1
-                count += 1
-            
-        if count == len(tst_sent['lus']):
-            sent_count += 1
-            sent_list.append(sent_id)
-    
-    random.shuffle(sent_list)
-    
-    dev = sent_list[:50]
-    tst = sent_list[50:]
-    trn = []
-    for i in koanno:
-        sent_id = i['text']['sent_id']
-        if sent_id not in tst:
-            if sent_id not in dev:
-                trn.append(sent_id)
-    dev = dev + trn[:50]
-    trn = trn[50:]
-    print(len(trn), len(tst), len(dev))
-    
-    d = {}
-    d['trn'] = trn
-    d['tst'] = tst
-    d['dev'] = dev
-    
-        
-    print(sent_count, anno_count, len(data_lus['tst']))
-    with open('./data/data_sent_list.json','w') as f:
-        json.dump(d, f, ensure_ascii=False, indent=4)
-            
-#check_lus()
-
-
 # # Step 2. Generate CoNLL for dataset
 
-# In[52]:
+# In[4]:
+
 
 def get_eid(span, ori_text):
     text = ' '.join(ori_text.split())
@@ -233,7 +120,7 @@ def getBIO_list(sent_list):
         fe = sent_list[i][14].lower()
         fe_list.append(fe)
     for i in range(len(sent_list)):
-        fe = sent_list[i][14]
+        fe = sent_list[i][14].lower()
         if i == 0:
             if fe == '_':
                 fe = 'O'
@@ -269,7 +156,8 @@ def getBIO_list(sent_list):
     return sent_list
 
 
-# In[53]:
+# In[12]:
+
 
 def genCoNLLdata(anno):
     result = []
@@ -313,18 +201,20 @@ def genCoNLLdata(anno):
             except KeyboardInterrupt:
                 raise
             except:
-                print('err2',anno_id)
+                #print('err2',anno_id)
                 pass
         except KeyboardInterrupt:
             raise
         except:
-            print('err1',sent_id)
+            pass
+            #print('err1',sent_id)
     return result
 
 
 # # Step 3. Write Data Files
 
 # In[ ]:
+
 
 # def load_sejong():
 #     with open('./koreanframenet/resource/KFN_annotations_from_sejong.json','r') as f:
@@ -333,14 +223,18 @@ def genCoNLLdata(anno):
 # sejong = load_sejong()
 
 
-# In[57]:
+# In[24]:
+
 
 def write_data():
-    with open('./data/data_sent_list.json', 'r') as f:
-        d = json.load(f)
-    dev = d['dev']
-    tst = d['tst']
-    trn = d['trn']
+    sys.stderr.write("\n...converting data to CoNLL 2009 format...\n")
+    dir_path = os.getcwd()
+    dev = sent_list['dev']
+    tst = sent_list['tst']
+    trn = sent_list['trn']
+    trn_file = open(dir_path+'/koreanframenet/data/training.tsv', 'w')
+    dev_file = open(dir_path+'/koreanframenet/data/dev.tsv', 'w')
+    tst_file = open(dir_path+'/koreanframenet/data/test.tsv', 'w')
 
 #     for s in sejong:
 #         for a in s['annotations']:
@@ -364,11 +258,9 @@ def write_data():
 #                         for token in conll:
 #                             line = '\t'.join(map(str,token))
 #                             f.write(line+"\n")
-#                         f.write('\n')
-        
+#                         f.write('\n')  
     for i in koanno:
         s_id = i['text']['sent_id']
-        print(s_id)
         if s_id in tst:
             anno = {}
             anno['sent_id'] = i['text']['sent_id']
@@ -380,16 +272,18 @@ def write_data():
                 for t in conll:
                     if t[12] != '_':
                         add = True
+                for t in conll:
+                    if t[14] in ['B_x', 'I_x', 'S_x']:
+                        add = False
                 if add == True:
-                    with open('./koreanframenet/data/test.tsv', 'a') as f:
-                        sent_id = str(anno['sent_id'])
-                        sent = anno['ko_text']
-                        f.write("#sentid:"+sent_id+"\n")
-                        f.write("#text:"+sent+"\n")
-                        for token in conll:
-                            line = '\t'.join(map(str,token))
-                            f.write(line+"\n")
-                        f.write('\n')
+                    sent_id = str(anno['sent_id'])
+                    sent = anno['ko_text']
+                    tst_file.write("#sentid:"+sent_id+"\n")
+                    tst_file.write("#text:"+sent+"\n")
+                    for token in conll:
+                        line = '\t'.join(map(str,token))
+                        tst_file.write(line+"\n")
+                    tst_file.write('\n')
         elif s_id in dev:
             anno = {}
             anno['sent_id'] = i['text']['sent_id']
@@ -401,16 +295,18 @@ def write_data():
                 for t in conll:
                     if t[12] != '_':
                         add = True
+                for t in conll:
+                    if t[14] in ['B_x', 'I_x', 'S_x']:
+                        add = False
                 if add == True:
-                    with open('./koreanframenet/data/dev.tsv', 'a') as f:
-                        sent_id = str(anno['sent_id'])
-                        sent = anno['ko_text']
-                        f.write("#sentid:"+sent_id+"\n")
-                        f.write("#text:"+sent+"\n")
-                        for token in conll:
-                            line = '\t'.join(map(str,token))
-                            f.write(line+"\n")
-                        f.write('\n')
+                    sent_id = str(anno['sent_id'])
+                    sent = anno['ko_text']
+                    dev_file.write("#sentid:"+sent_id+"\n")
+                    dev_file.write("#text:"+sent+"\n")
+                    for token in conll:
+                        line = '\t'.join(map(str,token))
+                        dev_file.write(line+"\n")
+                    dev_file.write('\n')
         else:
             anno = {}
             anno['sent_id'] = i['text']['sent_id']
@@ -423,16 +319,21 @@ def write_data():
                 for t in conll:
                     if t[12] != '_':
                         add = True
+                for t in conll:
+                    if t[14] in ['B_x', 'I_x', 'S_x']:
+                        add = False
                 if add == True:
-                    with open('./koreanframenet/data/training.tsv', 'a') as f:
-                        sent_id = str(anno['sent_id'])
-                        sent = anno['ko_text']
-                        f.write("#sentid:"+sent_id+"\n")
-                        f.write("#text:"+sent+"\n")
-                        for token in conll:
-                            line = '\t'.join(map(str,token))
-                            f.write(line+"\n")
-                        f.write('\n')
-    print('done')
+                    sent_id = str(anno['sent_id'])
+                    sent = anno['ko_text']
+                    trn_file.write("#sentid:"+sent_id+"\n")
+                    trn_file.write("#text:"+sent+"\n")
+                    for token in conll:
+                        line = '\t'.join(map(str,token))
+                        trn_file.write(line+"\n")
+                    trn_file.write('\n')
+    trn_file.close()
+    tst_file.close()
+    dev_file.close()
+    preprocessor.data_stat()
 write_data()
 

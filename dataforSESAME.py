@@ -3,11 +3,13 @@
 
 # In[ ]:
 
+
 import json
 
 train_file = './koreanframenet/data/training.tsv'
 test_file = './koreanframenet/data/test.tsv'
-file_list = [train_file, test_file]
+dev_file = './koreanframenet/data/dev.tsv'
+file_list = [train_file, test_file, dev_file]
 target_dir = './data/opensesame/'
 
 def get_data(lines, file_name):
@@ -18,6 +20,7 @@ def get_data(lines, file_name):
     exemplar_sent_num = 0
     train_sent_num = 0
     test_sent_num = 0
+    dev_sent_num = 0
     for line in lines:
         d = {}
         #line = line.rstip('\n')
@@ -26,10 +29,14 @@ def get_data(lines, file_name):
                 if 'sejong' in line:
                     sent_type = 'exemplar'
                 else:
-                    if 'training' in file_type:
+                    if 'train' in file_type:
                         sent_type = 'train'
-                    else:
+                    elif 'test' in file_type:
                         sent_type = 'test'
+                    elif 'dev' in file_type:
+                        sent_type = 'dev'
+                    else:
+                        pass
             else:
                 sents = line[6:]
         else:
@@ -72,6 +79,19 @@ def get_data(lines, file_name):
                     result.append(d)
                     sent = []
                     test_sent_num += 1
+            elif sent_type == 'dev':
+                if line != '\n':           
+                    line_list = line.split('\t')
+                    line_list[6] = str(dev_sent_num)
+                    line_text = '\t'.join(line_list)
+                    sent.append(line_text)
+                else:
+                    d['sent_type'] = sent_type
+                    d['sents'] = sents
+                    d['conll'] = sent
+                    result.append(d)
+                    sent = []
+                    test_sent_num += 1
             else:
                 pass
                 
@@ -88,21 +108,21 @@ def gen_data(file_name):
     data = get_data(lines, file_name)    
     
     if 'training' in file_name:
-        train_file = target_dir+'fn1.7.fulltext.train.syntaxnet.conll'
-        train_sents_file = target_dir+'fn1.7.fulltext.train.syntaxnet.conll.sents'
+        train_file = target_dir+'kofn1.7.fulltext.train.syntaxnet.conll'
+        train_sents_file = target_dir+'kofn1.7.fulltext.train.syntaxnet.conll.sents'
         train = open(train_file, 'w')
         train_sents = open(train_sents_file, 'w')
-        examplar_file = target_dir+'fn1.7.exemplar.train.syntaxnet.conll'
-        examplar_sents_file = target_dir+'fn1.7.exemplar.train.syntaxnet.conll.sents'
+        examplar_file = target_dir+'kofn1.7.exemplar.train.syntaxnet.conll'
+        examplar_sents_file = target_dir+'kofn1.7.exemplar.train.syntaxnet.conll.sents'
         examplar = open(examplar_file, 'w')
         examplar_sents = open(examplar_sents_file, 'w')
     else:
-        dev_file = target_dir+'fn1.7.dev.syntaxnet.conll'
-        dev_sents_file = target_dir+'fn1.7.dev.syntaxnet.conll.sents'
+        dev_file = target_dir+'kofn1.7.dev.syntaxnet.conll'
+        dev_sents_file = target_dir+'kofn1.7.dev.syntaxnet.conll.sents'
         dev = open(dev_file, 'w')
         dev_sents = open(dev_sents_file, 'w')   
-        test_file = target_dir+'fn1.7.test.syntaxnet.conll'
-        test_sents_file = target_dir+'fn1.7.test.syntaxnet.conll.sents'
+        test_file = target_dir+'kofn1.7.test.syntaxnet.conll'
+        test_sents_file = target_dir+'kofn1.7.test.syntaxnet.conll.sents'
         test = open(test_file, 'w')
         test_sents = open(test_sents_file, 'w')
     
@@ -124,11 +144,13 @@ def gen_data(file_name):
             examplar.write('\n')
         elif i['sent_type'] == 'test':
             test_sents.write(i['sents'])
-            dev_sents.write(i['sents'])
             for line in i['conll']:
                 test.write(line)
-                dev.write(line)
             test.write('\n')
+        elif i['sent_type'] == 'dev':
+            dev_sents.write(i['sents'])
+            for line in i['conll']:
+                dev.write(line)
             dev.write('\n')
     #dev.close()
     #dev_sents.close()
@@ -141,8 +163,8 @@ def gen_data(file_name):
             
 
 
-
 # In[ ]:
+
 
 for i in file_list:
     gen_data(i)
