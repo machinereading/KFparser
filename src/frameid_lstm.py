@@ -185,7 +185,7 @@ def get_target_span(sentence, targetpositions):
     return span
 
 
-# In[16]:
+# In[14]:
 
 
 class LSTMTagger(nn.Module):
@@ -219,11 +219,12 @@ class LSTMTagger(nn.Module):
 
 
     def forward(self, sentence, targetpositions):
+        if usingGPU: 
+            sentence.cuda()
+        else: 
+            pass
         embeds = self.word_embeddings(sentence)
-        if usingGPU:
-            embeds = embeds.view(len(sentence), 1, -1).cuda()
-        else:
-            embeds = embeds.view(len(sentence), 1, -1)
+        embeds = embeds.view(len(sentence), 1, -1)
         lstm_out_1, self.hidden_lstm_1 = self.lstm_1(
             embeds, self.hidden_lstm_1)
 
@@ -243,7 +244,7 @@ class LSTMTagger(nn.Module):
         return tag_scores
 
 
-# In[17]:
+# In[15]:
 
 
 model = LSTMTagger(len(word_to_ix), len(frame_to_ix))
