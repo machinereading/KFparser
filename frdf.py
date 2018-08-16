@@ -34,7 +34,7 @@ argid_model = 'rulebased'
 
 # config
 config_file = '/home/iterative/summarization/summary.ini'
-# config_file = '/disk_4/KFparser/test_summary.ini'
+# config_file = './test_summary.ini'
 config = configparser.ConfigParser()
 config.read(config_file)
 input_path = config.get('FRDF', 'FRDF_input_path')
@@ -214,7 +214,7 @@ def write_result(result):
     sys.stderr.write("PROCESSED SENTENCES     \t" + str(len(input_data)) + ' sentences\n')
     sys.stderr.write("PROCESSING TIME         \t" + str(round(time_spent, 2)) + '\n')
     sys.stderr.write("ANNOTATIONS             \t" + str(len(result)) + ' annotations\n')
-    with codecs.open(output_path, 'w', encoding='utf-8') as f:
+    with open(output_path, 'w', encoding='utf-8') as f:
         for i in result:
             f.write(i+'\n')
 
