@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[126]:
+# In[1]:
 
 
 import json
@@ -13,9 +13,10 @@ from koreanframenet import kfn
 from optparse import OptionParser
 import configparser
 import codecs
+import csv
 
 
-# In[44]:
+# In[2]:
 
 
 import targetid
@@ -24,7 +25,7 @@ import argid
 import graphGeneration
 
 
-# In[27]:
+# In[3]:
 
 
 # option
@@ -33,8 +34,8 @@ frameid_model = 'frequent'
 argid_model = 'rulebased'
 
 # config
-config_file = '/home/iterative/summarization/summary.ini'
-# config_file = './test_summary.ini'
+# config_file = '/home/iterative/summarization/summary.ini'
+config_file = './test_summary.ini'
 config = configparser.ConfigParser()
 config.read(config_file)
 input_path = config.get('FRDF', 'FRDF_input_path')
@@ -49,7 +50,7 @@ sys.stderr.write("\nINPUT FILE IS           \t" + str(input_path))
 sys.stderr.write("\nRESULT WILL BE SAVED TO  \t" + str(output_path))
 
 
-# In[45]:
+# In[4]:
 
 
 # parset options
@@ -66,7 +67,7 @@ def frameparsing(sent):
     return conll_arg
 
 
-# In[40]:
+# In[5]:
 
 
 def load_data():
@@ -82,7 +83,7 @@ def load_data():
     return data
 
 
-# In[116]:
+# In[6]:
 
 
 def getBIO_list(sent_list):
@@ -171,7 +172,7 @@ def get_span(sent_list):
     return result   
 
 
-# In[120]:
+# In[7]:
 
 
 def gen_annotation(parsed):
@@ -195,7 +196,7 @@ def gen_annotation(parsed):
 input_data = load_data()
 
 
-# In[125]:
+# In[8]:
 
 
 def parsing():
@@ -204,7 +205,7 @@ def parsing():
         parsed = frameparsing(i['text'])
         annos = gen_annotation(parsed)
         for anno in annos:
-            annotation = anno + '\t' +  i['docid'] + '\t' + i['pid'] + '\t' + i['sid']
+            annotation = [anno, i['docid'], i['pid'], i['sid']]
             result.append(annotation)
     return result
 
@@ -214,9 +215,11 @@ def write_result(result):
     sys.stderr.write("PROCESSED SENTENCES     \t" + str(len(input_data)) + ' sentences\n')
     sys.stderr.write("PROCESSING TIME         \t" + str(round(time_spent, 2)) + '\n')
     sys.stderr.write("ANNOTATIONS             \t" + str(len(result)) + ' annotations\n')
-    with open(output_path, 'w', encoding='utf-8') as f:
-        for i in result:
-            f.write(i+'\n')
+    
+    f = open(output_path, 'w', encoding='utf-8', newline = '')
+    wr = csv.writer(f, delimiter='\t')
+    for i in result:
+        wr.writerow(i)
 
 start_time = time.time()
 result = parsing()
