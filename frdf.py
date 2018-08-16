@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[43]:
+# In[126]:
 
 
 import json
@@ -12,6 +12,7 @@ import time
 from koreanframenet import kfn
 from optparse import OptionParser
 import configparser
+import codecs
 
 
 # In[44]:
@@ -32,8 +33,8 @@ frameid_model = 'frequent'
 argid_model = 'rulebased'
 
 # config
-#config_file = '/home/iterative/summarization/summary.ini'
-config_file = '/disk_4/KFparser/test_summary.ini'
+config_file = '/home/iterative/summarization/summary.ini'
+# config_file = '/disk_4/KFparser/test_summary.ini'
 config = configparser.ConfigParser()
 config.read(config_file)
 input_path = config.get('FRDF', 'FRDF_input_path')
@@ -213,7 +214,7 @@ def write_result(result):
     sys.stderr.write("PROCESSED SENTENCES     \t" + str(len(input_data)) + ' sentences\n')
     sys.stderr.write("PROCESSING TIME         \t" + str(round(time_spent, 2)) + '\n')
     sys.stderr.write("ANNOTATIONS             \t" + str(len(result)) + ' annotations\n')
-    with open(output_path, 'w') as f:
+    with codecs.open(output_path, 'w', encoding='utf-8') as f:
         for i in result:
             f.write(i+'\n')
 
